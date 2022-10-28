@@ -27,4 +27,4 @@ export class Blog {
     createdAt: string;
 }
 
-export const BlogsSchema = SchemaFactory.createForClass(Blog);
+export const BlogSchema = SchemaFactory.createForClass(Blog);

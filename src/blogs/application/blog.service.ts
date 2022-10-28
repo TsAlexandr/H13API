@@ -1,4 +1,4 @@
-import {blogType} from "../../../../ht_12/src/types";
+
 import {Inject, Injectable} from "@nestjs/common";
 import {BlogsRepo} from "../infrastructure/blog.repository";
 @Injectable()
@@ -15,7 +15,7 @@ export class BlogService {
     }*/
 
     async createBlog(name: string, youtubeUrl: string) {
-        const blog: blogType = {
+        const blog = {
             name: name,
             youtubeUrl: youtubeUrl,
             createdAt: new Date().toISOString()

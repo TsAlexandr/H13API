@@ -1,11 +1,11 @@
 import {Controller, Delete, Get, Post, Put, Query} from '@nestjs/common';
-import {BlogsService} from "../../../../ht_12/src/application/blogs-service";
 import {BlogQueryRepository} from "../infrastructure/blog-query.repository";
+import { BlogService } from '../application/blog.service';
 
 @Controller('blogs')
 export class BlogsController {
 
-    constructor(protected  blogsService:BlogsService,
+    constructor(protected  blogsService:BlogService,
                 protected blogQueryRepo:BlogQueryRepository) {
     }
 
@@ -15,7 +15,9 @@ export class BlogsController {
                       @Query() pageSize:string,
                       @Query() sortBy:string,
                       @Query() sortDirection:string){
-        const data = await this.blogQueryRepo.findAllBlogs(searchNameTerm, +pageNumber, +pageSize, sortBy, sortDirection);
+        //const data = await this.blogQueryRepo.findAllBlogs(searchNameTerm, +pageNumber, +pageSize, sortBy, sortDirection);
+
+        const data = await this.blogQueryRepo.findAllBlogs("", 1, 10, "createdAt", -1);
         return data
     }
 

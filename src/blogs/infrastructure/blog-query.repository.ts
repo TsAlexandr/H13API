@@ -1,14 +1,17 @@
 import {InjectModel} from "@nestjs/mongoose";
 import {Blog, BlogDocument} from "../entities/blogs.schema";
-import {Model} from "mongoose";
+import { Model, Schema } from "mongoose";
 import {Injectable} from "@nestjs/common";
+import * as mongoose from "mongoose";
+
+
 @Injectable()
 export class BlogQueryRepository{
     constructor(@InjectModel(Blog.name) private blogModel: Model<BlogDocument>) {
     }
     async findAllBlogs(searchNameTerm: any, pageNumber: number, pageSize: number, sortBy: string, sortDirection: any): Promise<{ pagesCount: number; pageSize: number; page: number; totalCount: number; items: any[] }> {
 
-        console.log("seqarchNameTerm " + searchNameTerm);
+        console.log("searchNameTerm " + searchNameTerm);
 
         const blogs = await this.blogModel.find({"name": {$regex: searchNameTerm, $options: 'i'}})
             .skip((pageNumber - 1) * pageSize)

@@ -6,11 +6,8 @@ import { CommentsController } from './comments/api/comments.controller';
 import { BlogsController } from './blogs/api/blogs.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import 'dotenv/config';
-import { BlogService } from './blogs/application/blog.service';
-import { BlogsRepo } from "./blogs/infrastructure/blog.repository";
 import { BlogsModule } from './blogs/blogs.module';
-import { Blog, BlogSchema } from "./blogs/entities/blogs.schema";
-import { BlogQueryRepository } from "./blogs/infrastructure/blog-query.repository";
+import { PostsModule } from './posts/posts.module';
 import * as mongoose from "mongoose";
 
 const mongoURI = process.env.mongoURI || 'mongodb://localhost:27017';
@@ -23,13 +20,12 @@ mongoose.set('toJSON', {
 });
 @Module({
   imports: [MongooseModule.forRoot(mongoURI),
-    MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema}])],
+    BlogsModule,
+    PostsModule],
   controllers: [
     AppController,
-    PostsController,
-    CommentsController,
-    BlogsController,
+    CommentsController
   ],
-  providers: [AppService, BlogService, BlogQueryRepository, BlogsRepo ],
+  providers: [AppService],
 })
 export class AppModule {}

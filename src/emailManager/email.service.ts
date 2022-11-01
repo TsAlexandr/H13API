@@ -23,7 +23,10 @@ export class EmailService{
     const result = await this.mailerService.sendMail({
       to: user.email,
       subject: 'Greeting from NestJS NodeMailer',
-      template: '\email',
+      template: './email',
+      context: {
+        name: "Devliss"
+      }
     }).then((success) => {
       console.log(success)
     })

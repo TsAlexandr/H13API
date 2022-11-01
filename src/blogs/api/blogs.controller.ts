@@ -1,14 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
 import {BlogQueryRepository} from "../infrastructure/blog-query.repository";
 import { BlogService } from '../application/blog.service';
 import { BlogQueryDto } from "../dto/blogQuery.dto";
 import { CreateBlogDto } from "../dto/createBlog.dto";
+import { PostsService } from "../../posts/application/posts.service";
+import { CreatePostDto } from "../../posts/dto/createPost.dto";
 
 @Controller('blogs')
 export class BlogsController {
 
     constructor(protected  blogsService:BlogService,
-                protected blogQueryRepo:BlogQueryRepository) {
+                protected blogQueryRepo:BlogQueryRepository,
+                private postService:PostsService) {
     }
 
     @Get()
@@ -27,7 +30,14 @@ export class BlogsController {
     }
 
     @Post('/:blogId/posts')
-    async createPostByBlogId(){
+    async createPostByBlogId(@Param('blogId') blogId:string,
+                             @Body() cpDto:CreatePostDto){
+        const blog = await this.blogQueryRepo.findBlogById(blogId)
+        if(!blog)
+            throw new NotFoundException();
+
+        const post = await this.postService.createPost(cpDto.title,cpDto.shortDescription,cpDto.content, cpDto.blogId, cpDto.blogId)
+        return post
     }
 
     @Get('/:id')

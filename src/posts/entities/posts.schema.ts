@@ -28,7 +28,6 @@ export const PostsModel = mongoose.model('posts', postsSchema)
 * */
 
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Blog } from "../../blogs/entities/blogs.schema";
 import { ELISchema, ExtendedLikesInfo } from "./extendedLikesInfo.schema";
 export type PostDocument = Post & Document;
 @Schema({versionKey:false})

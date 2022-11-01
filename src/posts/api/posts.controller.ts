@@ -14,16 +14,20 @@ import { PostsService } from "../application/posts.service";
 import { PostQueryDto } from "../dto/postQuery.dto";
 import { PostsQueryRepository } from "../infrastructure/posts-query.repository";
 import { CreatePostDto } from "../dto/createPost.dto";
+import { CommentsQueryRepository } from "../../comments/infrastucture/comments-query.repository";
 
 @Controller('posts')
 export class PostsController {
 
     constructor(protected postService:PostsService,
-                protected  postQueryRepo:PostsQueryRepository) {
+                protected  postQueryRepo:PostsQueryRepository,
+                protected commentsQueryRepo:CommentsQueryRepository) {
 
     }
     @Get(':postId/comments')
-    getCommentByPostId() {
+    async getCommentByPostId(@Param('postId') postId:string) {
+       /*const comments = await this.commentsQueryRepo.getCommentsByPostId(postId)
+        return comments*/
     }
 
     @Get()

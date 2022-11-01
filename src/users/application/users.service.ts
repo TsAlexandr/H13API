@@ -35,7 +35,6 @@ export class UsersService {
     const createResult = await this.userRepo.createUser(newUser)
   try{
       await this.mailService.sendConfirmation(newUser)
-    //await this.mailService.sendMail("devliss@yandex.ru","devliss")
   }
   catch(e){
       console.log(e)

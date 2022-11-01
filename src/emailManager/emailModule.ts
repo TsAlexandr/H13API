@@ -7,12 +7,12 @@ import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handleba
   imports:[MailerModule.forRoot({
     transport:{
     //  service:"gmail",
-    host:"smtp.gmail.com",//process.env.SMTP_HOST,
-    port:465,//process.env.SMTP_PORT,*/
+    host:process.env.SMTP_HOST,
+    port:process.env.SMTP_PORT,
     secure:true,
     auth:{
-      user:"devliss158@gmail.com",//"devliss@yandex.ru",//process.env.SMTP_USER,
-      pass:""//"9c4j3W54dh7JKUu"//process.env.SMTP_PASSWORD
+      user:process.env.SMTP_USER,
+      pass:process.env.SMTP_PASSWORD
     }
   },
     defaults:{

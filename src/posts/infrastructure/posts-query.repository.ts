@@ -185,7 +185,7 @@ export class PostsQueryRepository {
     if (userId && userId.length > 0) {
       UserID = new mongoose.Types.ObjectId(userId);
     }
-    const posts = await this.postModel.findOne({ blogId: blogId })
+    const posts = await this.postModel.find({ blogId: blogId })
         .skip((pageNumber - 1) * pageSize)
         .limit(pageSize)
         .sort({ [sortBy]: sortDirection });

@@ -302,7 +302,7 @@ export class PostsQueryRepository {
     if (userId && userId.length > 0) {
       UserID = new mongoose.Types.ObjectId(userId);
     }
-    const posts = await this.postModel
+    /*const posts = await this.postModel
       .aggregate([
         { $match: { blogId: blogId } },
         {
@@ -405,7 +405,8 @@ export class PostsQueryRepository {
       ])
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
-      .sort({ [sortBy]: sortDirection });
+      .sort({ [sortBy]: sortDirection });*/
+    const posts = await this.postModel.findOne({ blogId: blogId });
 
     /*const temp = posts.map((p) => {
       const likesCountArr = p.extendedLikesInfo.likesCount;

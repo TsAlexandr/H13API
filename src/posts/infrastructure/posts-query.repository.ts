@@ -154,7 +154,7 @@ export class PostsQueryRepository {
       page: pageNumber,
       pageSize: pageSize,
       totalCount: totalCount,
-      items: posts,
+      items: temp,
     };
     return outputObj;
   }
@@ -168,7 +168,8 @@ export class PostsQueryRepository {
     if (userId && userId.length > 0) {
       UserID = new mongoose.Types.ObjectId(userId);
     }
-    const post = await this.postModel.aggregate([
+    const post = await this.postModel.findOne({ id: id });
+    /*const post = await this.postModel.aggregate([
       { $match: { _id: ID } },
       {
         $lookup: {
@@ -284,9 +285,9 @@ export class PostsQueryRepository {
       };
       p.extendedLikesInfo = extendedLikesInfo;
       return p;
-    });
+    });*/
 
-    return temp[0];
+    return post;
   }
 
   async getPostsByBlogId(

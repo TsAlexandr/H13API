@@ -87,12 +87,16 @@ export class BlogsController {
   @Put('/:id')
   @HttpCode(204)
   async updateBlog(@Param('id') id: string, @Body() cbDto: CreateBlogDto) {
-    await this.blogsService.updateBlog(id, cbDto.name, cbDto.youtubeUrl);
+    const isUpdated = await this.blogsService.updateBlog(id, cbDto.name, cbDto.youtubeUrl);
+    if(!isUpdated) throw new NotFoundException()
+    return true
   }
 
   @Delete('/:id')
   @HttpCode(204)
   async deleteBlog(@Param('id') id: string) {
-    await this.blogsService.deleteBlog(id);
+    const isDeleted = await this.blogsService.deleteBlog(id);
+    if(!isDeleted) throw new NotFoundException()
+    return true
   }
 }

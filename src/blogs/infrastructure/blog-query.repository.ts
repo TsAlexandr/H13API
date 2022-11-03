@@ -43,7 +43,7 @@ export class BlogQueryRepository {
   }
 
   async findBlogById(id: string): Promise<any> {
-    const blog = await this.blogModel.findOne({ _id: id });
+    const blog = await this.blogModel.findOne({ id: id });
     return blog;
   }
 }

@@ -6,6 +6,7 @@ export class PostsService {
   async deletePost(id: string) {
     return this.postRepo.deletePost(id);
   }
+
   async createPost(
     title: string,
     shortDescription: string,
@@ -13,8 +14,6 @@ export class PostsService {
     blogId: string,
     blogName: string,
   ) {
-    console.log(this.postRepo);
-
     const post: any = {
       title: title,
       shortDescription: shortDescription,
@@ -42,7 +41,6 @@ export class PostsService {
       blogId,
     );
   }
-
   async deleteAllPosts() {
     return await this.postRepo.deleteAll();
   }

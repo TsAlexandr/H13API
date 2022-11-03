@@ -6,6 +6,7 @@ import { Post, PostSchema } from './entities/posts.schema';
 import { PostsRepository } from './infrastructure/posts.repository';
 import { PostsQueryRepository } from './infrastructure/posts-query.repository';
 import { CommentsModule } from '../comments/comments.module';
+import { BlogsModule } from '../blogs/blogs.module';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { CommentsModule } from '../comments/comments.module';
   ],
   controllers: [PostsController],
   providers: [PostsService, PostsQueryRepository, PostsRepository],
-  exports: [PostsService],
+  exports: [PostsService, PostsQueryRepository, PostsRepository],
 })
 export class PostsModule {}

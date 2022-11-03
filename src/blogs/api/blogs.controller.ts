@@ -13,15 +13,18 @@ import { BlogQueryRepository } from '../infrastructure/blog-query.repository';
 import { BlogService } from '../application/blog.service';
 import { BlogQueryDto } from '../dto/blogQuery.dto';
 import { CreateBlogDto } from '../dto/createBlog.dto';
-import { PostsService } from '../../posts/application/posts.service';
 import { CreatePostDto } from '../../posts/dto/createPost.dto';
+import { PostsService } from '../../posts/application/posts.service';
+import { PostsQueryRepository } from '../../posts/infrastructure/posts-query.repository';
+import { CreatePostByIdDto } from '../dto/createPostById.dto';
 
 @Controller('blogs')
 export class BlogsController {
   constructor(
     protected blogsService: BlogService,
     protected blogQueryRepo: BlogQueryRepository,
-    private postService: PostsService,
+    private postCUService: PostsService,
+    private postsQueryRepo: PostsQueryRepository,
   ) {}
 
   @Post()
@@ -42,22 +45,35 @@ export class BlogsController {
   }
 
   @Get('/:blogId/posts')
-  getAllPostsByBlogId(@Param() blogId: string, @Query() bqDto: BlogQueryDto) {}
+  async getAllPostsByBlogId(
+    @Param() blogId: string,
+    @Query() bqDto: BlogQueryDto,
+  ) {
+    return await this.postsQueryRepo.getPostsByBlogId(
+      '',
+      blogId,
+      bqDto.pageNumber,
+      bqDto.pageSize,
+      bqDto.sortBy,
+      bqDto.sortDirection,
+    );
+  }
 
   @Post('/:blogId/posts')
   async createPostByBlogId(
     @Param('blogId') blogId: string,
-    @Body() cpDto: CreatePostDto,
+    @Body() cpDto: CreatePostByIdDto,
   ) {
+    console.log('fdsfds' + blogId);
     const blog = await this.blogQueryRepo.findBlogById(blogId);
     if (!blog) throw new NotFoundException();
 
-    const post = await this.postService.createPost(
+    const post = await this.postCUService.createPost(
       cpDto.title,
       cpDto.shortDescription,
       cpDto.content,
-      cpDto.blogId,
-      cpDto.blogId,
+      blogId,
+      blogId,
     );
     return post;
   }

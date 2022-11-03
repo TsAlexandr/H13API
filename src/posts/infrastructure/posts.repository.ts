@@ -14,12 +14,12 @@ export class PostsRepository {
   async createPost(post: any) {
     const createdPost = new this.postModel(post);
     createdPost.save();
-    createdPost.extendedLikesInfo = {
+    /*createdPost.extendedLikesInfo = {
       likesCount: 0,
       dislikesCount: 0,
       myStatus: 'None',
       newestLikes: [],
-    };
+    };*/
 
     return createdPost;
   }

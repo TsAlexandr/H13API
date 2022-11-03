@@ -13,7 +13,6 @@ import { BlogQueryRepository } from '../infrastructure/blog-query.repository';
 import { BlogService } from '../application/blog.service';
 import { BlogQueryDto } from '../dto/blogQuery.dto';
 import { CreateBlogDto } from '../dto/createBlog.dto';
-import { CreatePostDto } from '../../posts/dto/createPost.dto';
 import { PostsService } from '../../posts/application/posts.service';
 import { PostsQueryRepository } from '../../posts/infrastructure/posts-query.repository';
 import { CreatePostByIdDto } from '../dto/createPostById.dto';

@@ -2,14 +2,14 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Get, HttpCode,
   HttpException,
   NotFoundException,
   Param,
   Post,
   Put,
-  Query,
-} from '@nestjs/common';
+  Query
+} from "@nestjs/common";
 import { PostsService } from '../application/posts.service';
 import { PostQueryDto } from '../dto/postQuery.dto';
 import { PostsQueryRepository } from '../infrastructure/posts-query.repository';
@@ -76,6 +76,7 @@ export class PostsController {
   }
 
   @Put(':id')
+  @HttpCode(204)
   async updatePost(@Param('id') id: string, @Body() cpDto: CreatePostDto) {
     const isUpdated = await this.postService.updatePost(
       id,
@@ -90,6 +91,7 @@ export class PostsController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   async deletePost(@Param('id') id: string) {
     const isDeleted = await this.postService.deletePost(id);
     if (!isDeleted) throw new NotFoundException();

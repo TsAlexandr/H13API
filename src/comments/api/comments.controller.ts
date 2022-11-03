@@ -1,21 +1,26 @@
-import { Controller, Delete, Get, NotFoundException, Param } from "@nestjs/common";
-import { PostsService } from "../../posts/application/posts.service";
-import { PostsQueryRepository } from "../../posts/infrastructure/posts-query.repository";
-import { CommentsService } from "../application/comments.service";
-import { CommentsQueryRepository } from "../infrastucture/comments-query.repository";
+import {
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+} from '@nestjs/common';
+import { PostsService } from '../../posts/application/posts.service';
+import { PostsQueryRepository } from '../../posts/infrastructure/posts-query.repository';
+import { CommentsService } from '../application/comments.service';
+import { CommentsQueryRepository } from '../infrastucture/comments-query.repository';
 
 @Controller('comments')
 export class CommentsController {
+  constructor(
+    protected commentsService: CommentsService,
+    protected commentQueryRepo: CommentsQueryRepository,
+  ) {}
 
-    constructor(protected commentsService:CommentsService,
-                protected  commentQueryRepo:CommentsQueryRepository) {
-
-    }
-
-    @Get(':id')
-    async getComment(@Param('id') id:string){
-        //let currentUserId = new ObjectId();
-        /*if(req.headers.authorization) {
+  @Get(':id')
+  async getComment(@Param('id') id: string) {
+    //let currentUserId = new ObjectId();
+    /*if(req.headers.authorization) {
             const token = req.headers.authorization.split(' ')[1]
             console.log(token)
             const userId = await this.jwtService.getUserByAccessToken(token);
@@ -26,13 +31,13 @@ export class CommentsController {
                 if(user){currentUserId = user.id}
             }
         }*/
-        const comment = await this.commentQueryRepo.getCommentById(id)
-        if(!comment){
-            throw new NotFoundException()
-        }
-        return comment
+    const comment = await this.commentQueryRepo.getCommentById(id);
+    if (!comment) {
+      throw new NotFoundException();
     }
-    /*@Delete()
+    return comment;
+  }
+  /*@Delete()
     async deleteComment(req:Request, res:Response){
         //@ts-ignore
         const comment = await this.commentsService.getCommentByID(req.params.commentId, req.user.id);

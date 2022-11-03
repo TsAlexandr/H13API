@@ -2,13 +2,13 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Get, HttpCode,
   NotFoundException,
   Param,
   Post,
   Put,
-  Query,
-} from '@nestjs/common';
+  Query
+} from "@nestjs/common";
 import { BlogQueryRepository } from '../infrastructure/blog-query.repository';
 import { BlogService } from '../application/blog.service';
 import { BlogQueryDto } from '../dto/blogQuery.dto';
@@ -83,11 +83,13 @@ export class BlogsController {
   }
 
   @Put('/:id')
+  @HttpCode(204)
   async updateBlog(@Param('id') id: string, @Body() cbDto: CreateBlogDto) {
     await this.blogsService.updateBlog(id, cbDto.name, cbDto.youtubeUrl);
   }
 
   @Delete('/:id')
+  @HttpCode(204)
   async deleteBlog(@Param('id') id: string) {
     await this.blogsService.deleteBlog(id);
   }

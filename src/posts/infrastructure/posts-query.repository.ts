@@ -168,7 +168,7 @@ export class PostsQueryRepository {
     if (userId && userId.length > 0) {
       UserID = new mongoose.Types.ObjectId(userId);
     }
-    const post = await this.postModel.findOne({ id: id });
+    const post = await this.postModel.findById(id);
     return post;
   }
 

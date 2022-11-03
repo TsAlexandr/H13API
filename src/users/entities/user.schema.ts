@@ -1,25 +1,24 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-
-export type UserDocument = User & Document
-@Schema()
-export class User{
+export type UserDocument = User & Document;
+@Schema({ versionKey: false })
+export class User {
   @Prop()
-  login:string
-
-  @Prop()
-  email:string
+  login: string;
 
   @Prop()
-  createdAt:string
+  email: string;
 
   @Prop()
-  passwordHash:string
+  createdAt: string;
 
   @Prop()
-  passwordSalt:string
+  passwordHash: string;
+
+  @Prop()
+  passwordSalt: string;
   /*emailConfirmation:{type:emailConfirmationSchema, required:true},
   recoveryData:{type:recoverySchema}*/
 }
 
-export const UserSchema = SchemaFactory.createForClass(User)
+export const UserSchema = SchemaFactory.createForClass(User);

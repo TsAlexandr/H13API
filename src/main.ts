@@ -5,11 +5,12 @@ import { HttpExceptionFilter } from './exception.filter';
 async function bootstrap() {
   console.log(process.env.PORT);
   const app = await NestFactory.create(AppModule);
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       transform: true,
-      exceptionFactory: (errors) => {
+      /*exceptionFactory: (errors) => {
         const errorsForResp = [];
         errors.forEach((err) => {
           const keys = Object.keys(err.constraints);
@@ -20,12 +21,11 @@ async function bootstrap() {
             });
           });
         });
-        //throw new BadRequestException(errors.map(e=>{return {field:e.property}}))
-      },
+      },*/
     }),
   );
   app.enableCors();
-  app.useGlobalFilters(new HttpExceptionFilter());
+  //app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(process.env.PORT || 7000);
 }
 bootstrap();

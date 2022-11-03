@@ -27,24 +27,24 @@ const postsSchema = new mongoose.Schema({
 export const PostsModel = mongoose.model('posts', postsSchema)
 * */
 
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { ELISchema, ExtendedLikesInfo } from "./extendedLikesInfo.schema";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ELISchema, ExtendedLikesInfo } from './extendedLikesInfo.schema';
 export type PostDocument = Post & Document;
-@Schema({versionKey:false})
-export class Post{
+@Schema({ versionKey: false })
+export class Post {
   @Prop()
-  title:string
+  title: string;
   @Prop()
-  shortDescription:string
+  shortDescription: string;
   @Prop()
-  content:string
+  content: string;
   @Prop()
-  blogName:string
+  blogName: string;
   @Prop()
-  blogId:string
+  blogId: string;
   @Prop()
-  createdAt:string
-  @Prop({type:ELISchema})
-  extendedLikesInfo:ExtendedLikesInfo
+  createdAt: string;
+  @Prop({ type: ELISchema })
+  extendedLikesInfo: ExtendedLikesInfo;
 }
 export const PostSchema = SchemaFactory.createForClass(Post);

@@ -24,6 +24,11 @@ export class BlogsController {
     private postService: PostsService,
   ) {}
 
+  @Post()
+  async createBlog(@Body() cbDto: CreateBlogDto) {
+    return await this.blogsService.createBlog(cbDto.name, cbDto.youtubeUrl);
+  }
+
   @Get()
   async getAllBlogs(@Query() bqDto: BlogQueryDto) {
     const data = await this.blogQueryRepo.findAllBlogs(
@@ -34,11 +39,6 @@ export class BlogsController {
       bqDto.sortDirection,
     );
     return data;
-  }
-
-  @Post()
-  async createBlog(@Body() cbDto: CreateBlogDto) {
-    await this.blogsService.createBlog(cbDto.name, cbDto.youtubeUrl);
   }
 
   @Get('/:blogId/posts')

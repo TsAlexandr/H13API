@@ -30,7 +30,7 @@ export class PostsRepository {
     content: string,
     blogId: string,
   ) {
-    const post = await this.postModel.findOne({ _id: id });
+    const post = await this.postModel.findById(id);
     if (!post) {
       return false;
     }

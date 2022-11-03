@@ -1,7 +1,7 @@
 
 import {Injectable, NestMiddleware, NotFoundException} from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import {BlogQueryRepository} from "../blogs/infrastructure/blog-query.repository";
+import {BlogQueryRepository} from "../../blogs/infrastructure/blog-query.repository";
 
 @Injectable()
 export class CheckExistingBlogMiddleware implements NestMiddleware {

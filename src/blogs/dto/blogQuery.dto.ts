@@ -1,5 +1,6 @@
 import { Transform } from "class-transformer";
 import { IsNumber, IsOptional, IsString } from "class-validator";
+import {transformSortDirection} from "../../common/helpers/cast.helper";
 
 export class BlogQueryDto{
   @IsString()
@@ -16,11 +17,13 @@ export class BlogQueryDto{
   @IsOptional()
   public pageSize:number = 10
 
+
   @IsString()
   @IsOptional()
   public sortBy:string = "createdAt"
 
-  @IsString()
+  @Transform(({value}) => transformSortDirection(value))
   @IsOptional()
-  public sortDirection:string = "asc"
+  @IsString()
+  public sortDirection:string = "desc"
 }

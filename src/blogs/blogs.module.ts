@@ -7,7 +7,7 @@ import { BlogsRepo } from './infrastructure/blog.repository';
 import { BlogQueryRepository } from './infrastructure/blog-query.repository';
 import { PostCreateUpdateService } from './application/post-create-update/post-create-update.service';
 import { PostsModule } from '../posts/posts.module';
-import {CheckExistingBlogMiddleware} from "../middlewares/blogId.middleware";
+import {CheckExistingBlogMiddleware} from "../common/middlewares/blogId.middleware";
 
 @Module({
   imports: [

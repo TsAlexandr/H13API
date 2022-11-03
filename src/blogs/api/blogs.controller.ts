@@ -45,9 +45,10 @@ export class BlogsController {
 
   @Get('/:blogId/posts')
   async getAllPostsByBlogId(
-    @Param() blogId: string,
+    @Param('blogId') blogId: string,
     @Query() bqDto: BlogQueryDto,
   ) {
+    console.log(bqDto)
     return await this.postsQueryRepo.getPostsByBlogId(
       '',
       blogId,

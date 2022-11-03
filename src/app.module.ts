@@ -10,7 +10,7 @@ import { UsersModule } from './users/users.module';
 import * as mongoose from 'mongoose';
 import { EmailModule } from './emailManager/emailModule';
 import { TestingModule } from './testing/testing.module';
-import {CheckExistingBlogMiddleware} from "./middlewares/blogId.middleware";
+import {CheckExistingBlogMiddleware} from "./common/middlewares/blogId.middleware";
 
 mongoose.set('toJSON', {
   virtuals: true,

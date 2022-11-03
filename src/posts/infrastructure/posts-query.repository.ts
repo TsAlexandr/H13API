@@ -138,13 +138,13 @@ export class PostsQueryRepository {
       const myStatusArr = post.extendedLikesInfo.myStatus;
       console.log(post.extendedLikesInfo);
 
-      const extendedLikesInfo = {
+      /*const extendedLikesInfo = {
         likesCount: likesCountArr.length ? likesCountArr[0].count : 0,
         dislikesCount: dislikesCountArr.length ? dislikesCountArr[0].count : 0,
         myStatus: myStatusArr.length ? myStatusArr[0].status : 'None',
         newestLikes: post.extendedLikesInfo.newestLikes,
       };
-      post.extendedLikesInfo = extendedLikesInfo;
+      post.extendedLikesInfo = extendedLikesInfo;*/
       return post;
     });
 
@@ -407,7 +407,7 @@ export class PostsQueryRepository {
       .limit(pageSize)
       .sort({ [sortBy]: sortDirection });
 
-    const temp = posts.map((p) => {
+    /*const temp = posts.map((p) => {
       const likesCountArr = p.extendedLikesInfo.likesCount;
       const dislikesCountArr = p.extendedLikesInfo.dislikesCount;
       const myStatusArr = p.extendedLikesInfo.myStatus;
@@ -420,7 +420,7 @@ export class PostsQueryRepository {
       };
       p.extendedLikesInfo = extendedLikesInfo;
       return p;
-    });
+    });*/
     const totalCount: number = await this.postModel.count({
       blogId: new mongoose.SchemaTypes.ObjectId(blogId),
     });
@@ -430,7 +430,7 @@ export class PostsQueryRepository {
       page: pageNumber,
       pageSize: pageSize,
       totalCount: totalCount,
-      items: temp,
+      items: posts,
     };
     return outputObj;
   }

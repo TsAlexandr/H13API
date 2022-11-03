@@ -24,7 +24,8 @@ export class UserQueryRepository{
   }
 
   async getUsers(searchLoginTerm:string, searchEmailTerm:string, pageNumber:number,pageSize:number, sortBy:string, sortDirection:any){
-    const users = await this.userModel.find({$or:[{"login":{$regex:searchLoginTerm, $options : 'i' }},{"email":{$regex: searchEmailTerm,$options : 'i' }}]})
+    const users = await this.userModel.find({$or:[{"login":{$regex:searchLoginTerm, $options : 'i' }},
+        {"email":{$regex: searchEmailTerm,$options : 'i' }}]},{passwordHash:0, passwordSalt:0})
       .skip((pageNumber-1)*pageSize)
       .limit(pageSize)
       .sort( {[sortBy] : sortDirection} )

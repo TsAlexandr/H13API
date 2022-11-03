@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {MiddlewareConsumer, Module, NestModule, RequestMethod} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import * as mongoose from 'mongoose';
 import { EmailModule } from './emailManager/emailModule';
 import { TestingModule } from './testing/testing.module';
+import {CheckExistingBlogMiddleware} from "./middlewares/blogId.middleware";
 
 mongoose.set('toJSON', {
   virtuals: true,
@@ -34,4 +35,5 @@ mongoose.set('toJSON', {
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule{
+}

@@ -1,10 +1,9 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { BlogsRepo } from "../infrastructure/blog.repository";
+import { Inject, Injectable } from '@nestjs/common';
+import { BlogsRepo } from '../infrastructure/blog.repository';
 
 @Injectable()
 export class BlogService {
-  constructor(protected blogsRepo: BlogsRepo) {
-  }
+  constructor(protected blogsRepo: BlogsRepo) {}
 
   /*async findAllBlogs(searchNameTerm: any, pageNumber: number, pageSize: number, sortBy: any, sortDirection: any) {
         return await this.blogsRepo.findAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection);
@@ -18,7 +17,7 @@ export class BlogService {
     const blog = {
       name: name,
       youtubeUrl: youtubeUrl,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     const createdBlog = await this.blogsRepo.createBlog(blog);

@@ -9,7 +9,6 @@ import { CommentsModule } from './comments/comments.module';
 import { UsersModule } from './users/users.module';
 import * as mongoose from 'mongoose';
 import { EmailModule } from './emailManager/emailModule';
-import { TestingController } from './testing/testing.controller';
 import { TestingModule } from './testing/testing.module';
 
 mongoose.set('toJSON', {
@@ -32,7 +31,7 @@ mongoose.set('toJSON', {
     EmailModule,
     TestingModule,
   ],
-  controllers: [AppController, TestingController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

@@ -1,13 +1,13 @@
 import { Injectable, NestMiddleware, NotFoundException } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { BlogQueryRepository } from '../../features/blogs/infrastructure/blog-query.repository';
+import { PostsQueryRepository } from '../../features/posts/infrastructure/posts-query.repository';
 
 @Injectable()
-export class CheckExistingBlogMiddleware implements NestMiddleware {
-  constructor(private blogQueryRepo: BlogQueryRepository) {}
+export class CheckExistingPostMiddleware implements NestMiddleware {
+  constructor(private postQueryRepo: PostsQueryRepository) {}
   async use(req: Request, res: Response, next: NextFunction) {
-    console.log('Middleware -->', req.params.blogId);
-    const blog = await this.blogQueryRepo.findBlogById(req.params.blogId);
+    console.log('Middleware -->', req.params.id);
+    const blog = await this.postQueryRepo.findPostById(req.params.id);
     console.log(blog);
     if (!blog) {
       console.log('Throw exception');

@@ -2,14 +2,15 @@ import {
   Body,
   Controller,
   Delete,
-  Get, HttpCode,
+  Get,
+  HttpCode,
   HttpException,
   NotFoundException,
   Param,
   Post,
   Put,
-  Query
-} from "@nestjs/common";
+  Query,
+} from '@nestjs/common';
 import { PostsService } from '../application/posts.service';
 import { PostQueryDto } from '../dto/postQuery.dto';
 import { PostsQueryRepository } from '../infrastructure/posts-query.repository';
@@ -72,7 +73,9 @@ export class PostsController {
 
   @Get(':id')
   async getPostById(@Param('id') id: string) {
-    return await this.postQueryRepo.findPostById(id, '');
+    const post = await this.postQueryRepo.findPostById(id);
+    if (!post) throw new NotFoundException();
+    return post;
   }
 
   @Put(':id')
@@ -82,7 +85,7 @@ export class PostsController {
       id,
       cpDto.title,
       cpDto.shortDescription,
-        cpDto.content,
+      cpDto.content,
       cpDto.blogId,
     );
     if (!isUpdated) throw new NotFoundException();

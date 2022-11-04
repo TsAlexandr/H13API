@@ -33,7 +33,7 @@ export class PostsQueryRepository {
     };
     return outputObj;
   }
-  async findPostById(id: string | null, userId: string) {
+  async findPostById(id: string | null) {
     if (!id) {
       return null;
     }
@@ -51,11 +51,7 @@ export class PostsQueryRepository {
     sortDirection: any,
   ) {
     console.log(blogId);
-    let UserID = new mongoose.Types.ObjectId();
-    if (userId && userId.length > 0) {
-      UserID = new mongoose.Types.ObjectId(userId);
-    }
-    const posts = await this.postModel
+      const posts = await this.postModel
       .find({ blogId: blogId })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)

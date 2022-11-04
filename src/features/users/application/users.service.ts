@@ -4,7 +4,7 @@ import { UserRepository } from '../infrastructure/user.repository';
 import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
 import * as bcrypt from 'bcrypt';
-import { EmailService } from '../../emailManager/email.service';
+import {EmailService} from "../../../emailManager/email.service";
 
 @Injectable()
 export class UsersService {

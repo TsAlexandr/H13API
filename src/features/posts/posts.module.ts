@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { PostsController } from './api/posts.controller';
 import { PostsService } from './application/posts.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -6,7 +6,7 @@ import { Post, PostSchema } from './entities/posts.schema';
 import { PostsRepository } from './infrastructure/posts.repository';
 import { PostsQueryRepository } from './infrastructure/posts-query.repository';
 import { CommentsModule } from '../comments/comments.module';
-import { BlogsModule } from '../blogs/blogs.module';
+import { CheckExistingPostMiddleware } from '../../common/middlewares/existingPost.middleware';
 
 @Module({
   imports: [
@@ -17,4 +17,13 @@ import { BlogsModule } from '../blogs/blogs.module';
   providers: [PostsService, PostsQueryRepository, PostsRepository],
   exports: [PostsService, PostsQueryRepository, PostsRepository],
 })
-export class PostsModule {}
+export class PostsModule {
+  /*configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(CheckExistingPostMiddleware)
+      .forRoutes(
+        { path: 'posts/:id', method: RequestMethod.POST },
+        { path: 'posts/:id', method: RequestMethod.DELETE },
+      );
+  }*/
+}

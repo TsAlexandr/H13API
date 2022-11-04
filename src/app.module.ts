@@ -1,16 +1,15 @@
-import {MiddlewareConsumer, Module, NestModule, RequestMethod} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BlogsModule } from './blogs/blogs.module';
-import { PostsModule } from './posts/posts.module';
-import { CommentsModule } from './comments/comments.module';
-import { UsersModule } from './users/users.module';
 import * as mongoose from 'mongoose';
 import { EmailModule } from './emailManager/emailModule';
-import { TestingModule } from './testing/testing.module';
-import {CheckExistingBlogMiddleware} from "./common/middlewares/blogId.middleware";
+import { BlogsModule } from './features/blogs/blogs.module';
+import { PostsModule } from './features/posts/posts.module';
+import { CommentsModule } from './features/comments/comments.module';
+import { UsersModule } from './features/users/users.module';
+import { TestingModule } from './features/testing/testing.module';
 
 mongoose.set('toJSON', {
   virtuals: true,
@@ -35,5 +34,4 @@ mongoose.set('toJSON', {
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule{
-}
+export class AppModule {}

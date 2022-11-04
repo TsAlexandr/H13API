@@ -2,7 +2,6 @@ import {
   forwardRef,
   MiddlewareConsumer,
   Module,
-  NestModule,
   RequestMethod,
 } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,9 +10,8 @@ import { BlogsController } from './api/blogs.controller';
 import { BlogService } from './application/blog.service';
 import { BlogsRepo } from './infrastructure/blog.repository';
 import { BlogQueryRepository } from './infrastructure/blog-query.repository';
-import { PostCreateUpdateService } from './application/post-create-update/post-create-update.service';
 import { PostsModule } from '../posts/posts.module';
-import { CheckExistingBlogMiddleware } from '../common/middlewares/blogId.middleware';
+import { CheckExistingBlogMiddleware } from '../../common/middlewares/blogId.middleware';
 
 @Module({
   imports: [

@@ -81,8 +81,8 @@ export class PostsController {
     const isUpdated = await this.postService.updatePost(
       id,
       cpDto.title,
-      cpDto.content,
       cpDto.shortDescription,
+        cpDto.content,
       cpDto.blogId,
     );
     if (!isUpdated) throw new NotFoundException();

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from '../entities/posts.schema';
 import { Model, Types } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { BlogQueryDto } from '../../blogs/dto/blogQuery.dto';
 
 @Injectable()
 export class PostsQueryRepository {
@@ -42,19 +43,17 @@ export class PostsQueryRepository {
     return post;
   }
 
-  async getPostsByBlogId(
-    userId: string,
-    blogId: string,
-    pageNumber: number,
-    pageSize: number,
-    sortBy: string,
-    sortDirection: any,
-  ) {
+  async getPostsByBlogId(blogId: string, bqDto: BlogQueryDto) {
     console.log(blogId);
+    const { pageNumber, pageSize, sortBy, sortDirection } = bqDto;
+
     const posts = await this.postModel
       .find({ blogId: blogId })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
+      //TODO: решить вопрос с типом sortDirection
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       .sort({ [sortBy]: sortDirection });
 
     const totalCount: number = await this.postModel.count({

@@ -10,6 +10,8 @@ import { PostsModule } from './features/posts/posts.module';
 import { CommentsModule } from './features/comments/comments.module';
 import { UsersModule } from './features/users/users.module';
 import { TestingModule } from './features/testing/testing.module';
+import { AuthModule } from './features/auth/auth.module';
+import { SecurityDevicesModule } from './features/security-devices/security-devices.module';
 
 mongoose.set('toJSON', {
   virtuals: true,
@@ -30,6 +32,8 @@ mongoose.set('toJSON', {
     UsersModule,
     EmailModule,
     TestingModule,
+    AuthModule,
+    SecurityDevicesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

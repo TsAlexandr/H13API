@@ -1,8 +1,11 @@
 import { Transform } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
-import {transformSortDirection} from "../../../common/helpers/cast.helper";
+import { transformSortDirection } from '../../../common/helpers/cast.helper';
 
 export class BlogQueryDto {
+  constructor() {
+    console.log('BlogQueryDto');
+  }
   @IsString()
   @IsOptional()
   public searchNameTerm = '';

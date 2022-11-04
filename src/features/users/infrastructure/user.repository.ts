@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model, Schema } from 'mongoose';
+import { Model } from 'mongoose';
 import { User, UserDocument } from '../entities/user.schema';
 
 export class UserRepository {
@@ -13,9 +13,7 @@ export class UserRepository {
 
   async deleteUser(id: string) {
     console.log(id);
-    const result = await this.userModel.deleteOne({
-      _id: id,
-    });
+    const result = await this.userModel.deleteOne({ id: id });
     return result.deletedCount === 1;
   }
 
@@ -26,7 +24,7 @@ export class UserRepository {
 
   async updateConfirmation(id: string) {
     const result = await this.userModel.updateOne(
-      { _id: new mongoose.SchemaTypes.ObjectId(id) },
+      { id: id },
       { $set: { 'emailConfirmation.isConfirmed': true } },
     );
     return result.modifiedCount === 1;
@@ -34,7 +32,7 @@ export class UserRepository {
 
   async updateConfirmationCode(id: string, code: string) {
     const result = await this.userModel.updateOne(
-      { _id: new mongoose.SchemaTypes.ObjectId(id) },
+      { id: id },
       { $set: { 'emailConfirmation.confirmationCode': code } },
     );
     return result.modifiedCount === 1;
@@ -52,7 +50,7 @@ export class UserRepository {
       { _id: userId },
       { $set: { recoveryData: recovery } },
     );
-    const updatedUser = await this.userModel.findOne({ _id: userId });
+    const updatedUser = await this.userModel.findOne({ id: userId });
     console.log(updatedUser);
     return updatedUser;
   }
@@ -61,7 +59,7 @@ export class UserRepository {
     passwordData: { passwordSalt: string; passwordHash: string },
   ) {
     const user = await this.userModel.findOneAndUpdate(
-      { _id: new mongoose.SchemaTypes.ObjectId(userId) },
+      { id: userId },
       {
         $set: {
           'recoveryData.isConfirmed': true,

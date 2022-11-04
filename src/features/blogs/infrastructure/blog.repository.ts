@@ -13,7 +13,7 @@ export class BlogsRepo {
   }
 
   async deleteBlog(id: string): Promise<boolean> {
-    const result = await this.blogModel.deleteOne({ _id: id });
+    const result = await this.blogModel.deleteOne({ id: id });
     return result.deletedCount === 1;
   }
 
@@ -22,7 +22,7 @@ export class BlogsRepo {
     name: string,
     youtubeUrl: string,
   ): Promise<boolean> {
-    const blog = await this.blogModel.findOne({ _id: id });
+    const blog = await this.blogModel.findById(id);
     if (!blog) {
       return false;
     }

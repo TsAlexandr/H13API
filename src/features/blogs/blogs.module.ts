@@ -16,7 +16,7 @@ import { CheckExistingBlogMiddleware } from '../../common/middlewares/blogId.mid
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema }]),
-    forwardRef(() => PostsModule),
+    /*forwardRef(() => */ PostsModule, //),
   ],
   controllers: [BlogsController],
   providers: [BlogService, BlogsRepo, BlogQueryRepository],

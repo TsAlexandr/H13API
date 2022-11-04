@@ -29,18 +29,12 @@ export class BlogsController {
 
   @Post()
   async createBlog(@Body() cbDto: CreateBlogDto) {
-    return await this.blogsService.createBlog(cbDto.name, cbDto.youtubeUrl);
+    return await this.blogsService.createBlog(cbDto);
   }
 
   @Get()
   async getAllBlogs(@Query() bqDto: BlogQueryDto) {
-    const data = await this.blogQueryRepo.findAllBlogs(
-      bqDto.searchNameTerm,
-      bqDto.pageNumber,
-      bqDto.pageSize,
-      bqDto.sortBy,
-      bqDto.sortDirection,
-    );
+    const data = await this.blogQueryRepo.findAllBlogs(bqDto);
     return data;
   }
 
@@ -50,14 +44,7 @@ export class BlogsController {
     @Query() bqDto: BlogQueryDto,
   ) {
     console.log(bqDto);
-    return await this.postsQueryRepo.getPostsByBlogId(
-      '',
-      blogId,
-      bqDto.pageNumber,
-      bqDto.pageSize,
-      bqDto.sortBy,
-      bqDto.sortDirection,
-    );
+    return await this.postsQueryRepo.getPostsByBlogId(blogId, bqDto);
   }
 
   @Post('/:blogId/posts')
@@ -65,17 +52,10 @@ export class BlogsController {
     @Param('blogId') blogId: string,
     @Body() cpDto: CreatePostByIdDto,
   ) {
-    console.log('fdsfds' + blogId);
     const blog = await this.blogQueryRepo.findBlogById(blogId);
     if (!blog) throw new NotFoundException();
 
-    const post = await this.postCUService.createPost(
-      cpDto.title,
-      cpDto.shortDescription,
-      cpDto.content,
-      blogId,
-      blogId,
-    );
+    const post = await this.postCUService.createPost(cpDto, blog);
     return post;
   }
 

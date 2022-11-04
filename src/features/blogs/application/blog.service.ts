@@ -1,22 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BlogsRepo } from '../infrastructure/blog.repository';
+import { CreateBlogDto } from '../dto/createBlog.dto';
 
 @Injectable()
 export class BlogService {
   constructor(protected blogsRepo: BlogsRepo) {}
 
-  /*async findAllBlogs(searchNameTerm: any, pageNumber: number, pageSize: number, sortBy: any, sortDirection: any) {
-        return await this.blogsRepo.findAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection);
-    }
-
-    async findBlogById(id: string) {
-        return this.blogsRepo.findBlogById(id);
-    }*/
-
-  async createBlog(name: string, youtubeUrl: string) {
+  async createBlog(cbDto: CreateBlogDto) {
     const blog = {
-      name: name,
-      youtubeUrl: youtubeUrl,
+      name: cbDto.name,
+      youtubeUrl: cbDto.youtubeUrl,
       createdAt: new Date().toISOString(),
     };
 

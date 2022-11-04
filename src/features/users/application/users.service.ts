@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from '../../../emailManager/email.service';
+import {CreateUserDto} from "../dto/create-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -13,18 +14,14 @@ export class UsersService {
     protected userQueryRepo: UserQueryRepository,
     protected userRepo: UserRepository,
   ) {}
-  async createUser(
-    login: string,
-    password: string,
-    email: string,
-  ): Promise<any> {
+  async createUser(cuDto: CreateUserDto): Promise<any> {
     console.log('create user');
     const passwordSalt = await bcrypt.genSalt(12);
-    const passwordHash = await this._generateHash(password, passwordSalt);
+    const passwordHash = await this._generateHash(cuDto.password, passwordSalt);
 
     const newUser = {
-      login,
-      email,
+      login: cuDto.login,
+      email: cuDto.email,
       passwordHash,
       passwordSalt,
       createdAt: new Date().toISOString(),

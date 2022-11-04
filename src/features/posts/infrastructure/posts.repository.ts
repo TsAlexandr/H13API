@@ -2,18 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from '../entities/posts.schema';
 import { Model } from 'mongoose';
+import {CreatePostDto} from "../dto/createPost.dto";
 
 @Injectable()
 export class PostsRepository {
   constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
   async deletePost(id: string) {
-    const result = await this.postModel.deleteOne({ _id: id });
+    const result = await this.postModel.deleteOne({ id: id });
     return result.deletedCount === 1;
   }
   async createPost(post: any) {
     const createdPost = new this.postModel(post);
-    createdPost.save();
+    await createdPost.save();
     /*createdPost.extendedLikesInfo = {
       likesCount: 0,
       dislikesCount: 0,
@@ -23,21 +24,15 @@ export class PostsRepository {
 
     return createdPost;
   }
-  async updatePost(
-    id: string,
-    title: string,
-    shortDescription: string,
-    content: string,
-    blogId: string,
-  ) {
+  async updatePost(id: string, cpDto: CreatePostDto) {
     const post = await this.postModel.findById(id);
     if (!post) {
       return false;
     }
-    post.title = title;
-    post.shortDescription = shortDescription;
-    post.content = content;
-    post.blogId = blogId;
+    post.title = cpDto.title;
+    post.shortDescription = cpDto.shortDescription;
+    post.content = cpDto.content;
+    post.blogId = cpDto.blogId;
 
     post.save();
     return true;

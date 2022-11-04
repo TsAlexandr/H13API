@@ -23,24 +23,13 @@ export class UsersController {
   ) {}
   @Get()
   async getAllUsers(@Query() uqDto: UserQueryDto) {
-    const users = await this.userQueryRepo.getUsers(
-      uqDto.searchLoginTerm,
-      uqDto.searchEmailTerm,
-      uqDto.pageNumber,
-      uqDto.pageSize,
-      uqDto.sortBy,
-      uqDto.sortDirection,
-    );
+    const users = await this.userQueryRepo.getUsers(uqDto);
     return users;
   }
 
   @Post()
   async createUser(@Body() cuDto: CreateUserDto) {
-    const createdUser = await this.userService.createUser(
-      cuDto.login,
-      cuDto.password,
-      cuDto.email,
-    );
+    const createdUser = await this.userService.createUser(cuDto);
     return createdUser;
   }
 

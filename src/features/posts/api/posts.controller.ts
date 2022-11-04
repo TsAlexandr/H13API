@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  HttpException,
   NotFoundException,
   Param,
   Post,
@@ -16,7 +15,7 @@ import { PostQueryDto } from '../dto/postQuery.dto';
 import { PostsQueryRepository } from '../infrastructure/posts-query.repository';
 import { CreatePostDto } from '../dto/createPost.dto';
 import { CommentsQueryRepository } from '../../comments/infrastucture/comments-query.repository';
-import { PostCreateUpdateService } from '../../blogs/application/post-create-update/post-create-update.service';
+import { BlogQueryRepository } from '../../blogs/infrastructure/blog-query.repository';
 
 @Controller('posts')
 export class PostsController {
@@ -24,6 +23,7 @@ export class PostsController {
     protected postService: PostsService,
     protected postQueryRepo: PostsQueryRepository,
     protected commentsQueryRepo: CommentsQueryRepository,
+    private blogQueryRepo: BlogQueryRepository,
   ) {}
   @Get(':postId/comments')
   async getCommentByPostId(@Param('postId') postId: string) {
@@ -33,17 +33,6 @@ export class PostsController {
 
   @Get()
   async getAllPosts(@Query() pqDto: PostQueryDto) {
-    /*if(req.headers.authorization) {
-            const token = req.headers.authorization.split(' ')[1]
-            console.log(token)
-            const userId = await this.jwtService.getUserByAccessToken(token);
-            console.log("UserId = " + userId)
-
-            if(userId){
-                const user = await this.userService.getUserById(userId.toString());
-                if(user){currentUserId = user.id}
-            }
-        }*/
     const currentUserId = '';
     const data = await this.postQueryRepo.findAllPosts(
       currentUserId,
@@ -58,13 +47,10 @@ export class PostsController {
   @Post()
   async createPost(@Body() cpDto: CreatePostDto) {
     console.log(cpDto);
-    const post = await this.postService.createPost(
-      cpDto.title,
-      cpDto.shortDescription,
-      cpDto.content,
-      cpDto.blogId,
-      cpDto.blogId,
-    );
+    const blog = await this.blogQueryRepo.findBlogById(cpDto.blogId);
+    if (!blog) throw new NotFoundException();
+
+    const post = await this.postService.createPost(cpDto, blog);
 
     if (!post) throw new NotFoundException();
 
@@ -81,13 +67,7 @@ export class PostsController {
   @Put(':id')
   @HttpCode(204)
   async updatePost(@Param('id') id: string, @Body() cpDto: CreatePostDto) {
-    const isUpdated = await this.postService.updatePost(
-      id,
-      cpDto.title,
-      cpDto.shortDescription,
-      cpDto.content,
-      cpDto.blogId,
-    );
+    const isUpdated = await this.postService.updatePost(id, cpDto);
     if (!isUpdated) throw new NotFoundException();
 
     return true;

@@ -2,6 +2,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from '../entities/user.schema';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
+import { UserQueryDto } from '../dto/userQuery.dto';
+
 @Injectable()
 export class UserQueryRepository {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
@@ -12,6 +14,7 @@ export class UserQueryRepository {
     });
     return user;
   }
+
   async findByLogin(login: string) {
     const user = await this.userModel.findOne(
       {
@@ -20,6 +23,7 @@ export class UserQueryRepository {
     );
     return user;
   }
+
   async findById(id: string) {
     const user = await this.userModel.findById(id);
     console.log('Repo');
@@ -27,14 +31,16 @@ export class UserQueryRepository {
     return user;
   }
 
-  async getUsers(
-    searchLoginTerm: string,
-    searchEmailTerm: string,
-    pageNumber: number,
-    pageSize: number,
-    sortBy: string,
-    sortDirection: any,
-  ) {
+  async getUsers(uqDto: UserQueryDto) {
+    const {
+      searchLoginTerm,
+      searchEmailTerm,
+      pageNumber,
+      pageSize,
+      sortBy,
+      sortDirection,
+    } = uqDto;
+
     const users = await this.userModel
       .find(
         {
@@ -47,6 +53,9 @@ export class UserQueryRepository {
       )
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
+      //TODO:Поменять тип для sortDirection
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       .sort({ [sortBy]: sortDirection });
 
     const temp = users.map((user) => {
@@ -74,6 +83,7 @@ export class UserQueryRepository {
     const user = await this.userModel.findOne({ email: email });
     return user;
   }
+
   async getUserByRecoveryCode(code: string): Promise<any> {
     const user = await this.userModel.findOne({
       'recoveryData.recoveryCode': code,

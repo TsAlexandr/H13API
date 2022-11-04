@@ -1,45 +1,29 @@
 import { PostsRepository } from '../infrastructure/posts.repository';
 import { Injectable } from '@nestjs/common';
+import { CreatePostByIdDto } from '../../blogs/dto/createPostById.dto';
+import { CreatePostDto } from '../dto/createPost.dto';
 @Injectable()
 export class PostsService {
   constructor(protected postRepo: PostsRepository) {}
   async deletePost(id: string) {
     return this.postRepo.deletePost(id);
   }
-
-  async createPost(
-    title: string,
-    shortDescription: string,
-    content: string,
-    blogId: string,
-    blogName: string,
-  ) {
+  //TODO:исправить тип для блога
+  async createPost(cpDto: CreatePostByIdDto, blog: any) {
     const post: any = {
-      title: title,
-      shortDescription: shortDescription,
-      content: content,
-      blogId: blogId,
-      blogName: blogName,
+      title: cpDto.title,
+      shortDescription: cpDto.shortDescription,
+      content: cpDto.content,
+      blogId: blog.id,
+      blogName: blog.name,
       createdAt: new Date().toISOString(),
     };
 
     const createdPost = await this.postRepo.createPost(post);
     return createdPost;
   }
-  async updatePost(
-    id: string,
-    title: string,
-    shortDescription: string,
-    content: string,
-    blogId: string,
-  ) {
-    return this.postRepo.updatePost(
-      id,
-      title,
-      shortDescription,
-      content,
-      blogId,
-    );
+  async updatePost(id: string, cpDto: CreatePostDto) {
+    return this.postRepo.updatePost(id, cpDto);
   }
   async deleteAllPosts() {
     return await this.postRepo.deleteAll();

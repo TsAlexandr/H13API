@@ -35,9 +35,9 @@ export class Post {
   @Prop()
   title: string;
   @Prop()
-  shortDescription: string;
-  @Prop()
   content: string;
+  @Prop()
+  shortDescription: string;
   @Prop()
   blogName: string;
   @Prop()

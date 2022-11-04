@@ -1,11 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Post } from './posts.schema';
 
-/*{
-  addedAt: string
-  userId: string
-  login: string
-}*/
 @Schema({ _id: false, versionKey: false })
 export class NewestLikes {
   addedAt: string;

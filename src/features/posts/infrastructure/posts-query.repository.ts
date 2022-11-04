@@ -51,7 +51,7 @@ export class PostsQueryRepository {
     sortDirection: any,
   ) {
     console.log(blogId);
-      const posts = await this.postModel
+    const posts = await this.postModel
       .find({ blogId: blogId })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)

@@ -1,25 +1,24 @@
-import { IsOptional } from "class-validator";
-import { Transform } from "class-transformer";
+import { IsOptional } from 'class-validator';
+import { Transform } from 'class-transformer';
 
-export class UserQueryDto{
+export class UserQueryDto {
+  @IsOptional()
+  public searchLoginTerm = '';
 
   @IsOptional()
-  public searchLoginTerm:string = ""
-
-  @IsOptional()
-  public searchEmailTerm:string = ""
+  public searchEmailTerm = '';
 
   @Transform(({ value }) => parseInt(value))
   @IsOptional()
-  public pageNumber:number = 1
+  public pageNumber = 1;
 
   @Transform(({ value }) => parseInt(value))
   @IsOptional()
-  public pageSize:number = 10
+  public pageSize = 10;
 
   @IsOptional()
-  public sortBy:string = "createdAt"
+  public sortBy = 'createdAt';
 
   @IsOptional()
-  public sortDirection:string = "desc"
+  public sortDirection = 'desc';
 }

@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-} from '@nestjs/common';
-import { PostsService } from '../../posts/application/posts.service';
-import { PostsQueryRepository } from '../../posts/infrastructure/posts-query.repository';
+import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { CommentsService } from '../application/comments.service';
 import { CommentsQueryRepository } from '../infrastucture/comments-query.repository';
 

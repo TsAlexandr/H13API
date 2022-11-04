@@ -1,10 +1,10 @@
-import { IsUrl, Length } from "class-validator";
+import { IsUrl, Length } from 'class-validator';
 
-export class CreateBlogDto{
+export class CreateBlogDto {
   @Length(1, 15)
-  public name: string
+  public name: string;
 
   @Length(1, 100)
   @IsUrl()
-  public youtubeUrl: string
+  public youtubeUrl: string;
 }

@@ -2,13 +2,14 @@ import {
   Body,
   Controller,
   Delete,
-  Get, HttpCode,
+  Get,
+  HttpCode,
   NotFoundException,
   Param,
   Post,
   Put,
-  Query
-} from "@nestjs/common";
+  Query,
+} from '@nestjs/common';
 import { BlogQueryRepository } from '../infrastructure/blog-query.repository';
 import { BlogService } from '../application/blog.service';
 import { BlogQueryDto } from '../dto/blogQuery.dto';
@@ -48,7 +49,7 @@ export class BlogsController {
     @Param('blogId') blogId: string,
     @Query() bqDto: BlogQueryDto,
   ) {
-    console.log(bqDto)
+    console.log(bqDto);
     return await this.postsQueryRepo.getPostsByBlogId(
       '',
       blogId,
@@ -80,24 +81,28 @@ export class BlogsController {
 
   @Get('/:id')
   async getBlogById(@Param('id') id: string) {
-   const blog = await this.blogQueryRepo.findBlogById(id);
-   if(!blog) throw new NotFoundException()
-    return blog
+    const blog = await this.blogQueryRepo.findBlogById(id);
+    if (!blog) throw new NotFoundException();
+    return blog;
   }
 
   @Put('/:id')
   @HttpCode(204)
   async updateBlog(@Param('id') id: string, @Body() cbDto: CreateBlogDto) {
-    const isUpdated = await this.blogsService.updateBlog(id, cbDto.name, cbDto.youtubeUrl);
-    if(!isUpdated) throw new NotFoundException()
-    return true
+    const isUpdated = await this.blogsService.updateBlog(
+      id,
+      cbDto.name,
+      cbDto.youtubeUrl,
+    );
+    if (!isUpdated) throw new NotFoundException();
+    return true;
   }
 
   @Delete('/:id')
   @HttpCode(204)
   async deleteBlog(@Param('id') id: string) {
     const isDeleted = await this.blogsService.deleteBlog(id);
-    if(!isDeleted) throw new NotFoundException()
-    return true
+    if (!isDeleted) throw new NotFoundException();
+    return true;
   }
 }

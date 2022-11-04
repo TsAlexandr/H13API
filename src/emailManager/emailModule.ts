@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { EmailService } from "./email.service";
-import { MailerModule } from "@nestjs-modules/mailer";
-import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter";
+import { EmailService } from './email.service';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports:[ConfigModule,
+  imports: [
+    ConfigModule,
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -16,8 +17,8 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
           ignoreTLS: true,
           secure: true,
           auth: {
-            user: configService.get<string>("SMTP_USER"),
-            pass: configService.get<string>("SMTP_PASSWORD"),
+            user: configService.get<string>('SMTP_USER'),
+            pass: configService.get<string>('SMTP_PASSWORD'),
           },
         },
         defaults: {
@@ -54,9 +55,10 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
         strict: true,
       },
     },
-  })*/],
-  controllers:[],
+  })*/
+  ],
+  controllers: [],
   providers: [EmailService],
-  exports:[EmailService]
+  exports: [EmailService],
 })
 export class EmailModule {}

@@ -1,22 +1,22 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { LikesInfo, LikesInfoSchema } from "./likesInfo.schema";
-import * as mongoose from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { LikesInfo, LikesInfoSchema } from './likesInfo.schema';
+import * as mongoose from 'mongoose';
 
-export type CommentDocument = Comment & Document
+export type CommentDocument = Comment & Document;
 
-@Schema({versionKey:false})
-export class Comment{
+@Schema({ versionKey: false })
+export class Comment {
   @Prop()
-  content:string
+  content: string;
   @Prop()
-  postId: string
+  postId: string;
   @Prop()
-  userId:string
+  userId: string;
   @Prop()
-  userLogin:string
+  userLogin: string;
   @Prop()
-  createdAt:Date
-  @Prop({type:LikesInfoSchema})
-  likesInfo:LikesInfo
+  createdAt: Date;
+  @Prop({ type: LikesInfoSchema })
+  likesInfo: LikesInfo;
 }
-export const CommentSchema = SchemaFactory.createForClass(Comment)
+export const CommentSchema = SchemaFactory.createForClass(Comment);

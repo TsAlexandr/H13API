@@ -15,10 +15,11 @@ export class PostsQueryRepository {
     sortBy: string,
     sortDirection: any,
   ) {
-    const posts = await this.postModel.find({})
-        .skip((pageNumber - 1) * pageSize)
-        .limit(pageSize)
-        .sort({ [sortBy]: sortDirection });
+    const posts = await this.postModel
+      .find({})
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize)
+      .sort({ [sortBy]: sortDirection });
 
     const totalCount = await this.postModel.countDocuments();
 
@@ -54,10 +55,11 @@ export class PostsQueryRepository {
     if (userId && userId.length > 0) {
       UserID = new mongoose.Types.ObjectId(userId);
     }
-    const posts = await this.postModel.find({ blogId: blogId })
-        .skip((pageNumber - 1) * pageSize)
-        .limit(pageSize)
-        .sort({ [sortBy]: sortDirection });
+    const posts = await this.postModel
+      .find({ blogId: blogId })
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize)
+      .sort({ [sortBy]: sortDirection });
 
     const totalCount: number = await this.postModel.count({
       blogId: blogId,

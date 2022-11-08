@@ -49,7 +49,12 @@ export class UserQueryRepository {
             { email: { $regex: searchEmailTerm, $options: 'i' } },
           ],
         },
-        { passwordHash: 0, passwordSalt: 0, emailConfirmation: 0 },
+        {
+          passwordHash: 0,
+          passwordSalt: 0,
+          emailConfirmation: 0,
+          recoveryData: 0,
+        },
       )
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)

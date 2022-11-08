@@ -1,16 +1,14 @@
 import {
+  BadRequestException,
+  Body,
   Controller,
   Get,
+  Headers,
+  HttpCode,
   Ip,
   Post,
   Res,
-  Headers,
   UnauthorizedException,
-  Body,
-  HttpCode,
-  BadRequestException,
-  Inject,
-  forwardRef,
   UseGuards,
 } from '@nestjs/common';
 import dayjs from 'dayjs';
@@ -25,7 +23,6 @@ import { RefreshToken } from '../../../common/decorators/cookies.decorator';
 import { CreateUserDto } from '../../users/dto/create-user.dto';
 import { User } from '../../../common/decorators/user.decorator';
 import { UserQueryRepository } from '../../users/infrastructure/user-query.repository';
-import { BasicAuthGuard } from '../../../common/guards/basicAuth.guard';
 import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
 
 @Controller('auth')
@@ -61,7 +58,7 @@ export class AuthController {
     return true;
   }
 
-  @Post()
+  @Post('login')
   async login(
     @Res({ passthrough: true }) res: Response,
     @Ip() ip: string,
@@ -129,7 +126,7 @@ export class AuthController {
   @Post('registration-email-resending')
   @HttpCode(204)
   async resendEmailConfirmation(@Body('email') email: string) {
-    const result = await this.authService.resendConfirmCode(email);
+    await this.authService.resendConfirmCode(email);
   }
 
   @Post('logout')
@@ -155,12 +152,10 @@ export class AuthController {
   @UseGuards(BearerAuthGuard)
   @Get('me')
   async getInfoAboutMe(@User() user: any) {
-    const findedUser = await this.userQueryRepo.findById(user.id);
-
     /*if(user){
       delete Object.assign(user, {["userId"]: user["id"] })["id"]
     }*/
 
-    return findedUser;
+    return await this.userQueryRepo.findById(user.id);
   }
 }

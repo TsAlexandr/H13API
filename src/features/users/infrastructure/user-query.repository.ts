@@ -49,7 +49,7 @@ export class UserQueryRepository {
             { email: { $regex: searchEmailTerm, $options: 'i' } },
           ],
         },
-        { passwordHash: 0, passwordSalt: 0 },
+        { passwordHash: 0, passwordSalt: 0, emailConfirmation: 0 },
       )
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
@@ -84,9 +84,11 @@ export class UserQueryRepository {
     return user;
   }
 
-  async getUserByCode(code:string):Promise<any>{
-    const user = await this.userModel.findOne({"emailConfirmation.confirmationCode":code})
-    return user
+  async getUserByCode(code: string): Promise<any> {
+    const user = await this.userModel.findOne({
+      'emailConfirmation.confirmationCode': code,
+    });
+    return user;
   }
 
   async getUserByRecoveryCode(code: string): Promise<any> {

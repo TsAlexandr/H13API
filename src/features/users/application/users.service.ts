@@ -33,8 +33,8 @@ export class UsersService {
       },
       banInfo: {
         isBanned: false,
-        banDate: '',
-        banReason: '',
+        banDate: null,
+        banReason: null,
       },
     };
 
@@ -50,6 +50,7 @@ export class UsersService {
       login: createResult.login,
       email: createResult.email,
       createdAt: createResult.createdAt,
+      banInfo: createResult.banInfo,
     };
   }
 

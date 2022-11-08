@@ -14,6 +14,6 @@ import { EmailModule } from '../../emailManager/emailModule';
     EmailModule,
   ],
   providers: [UsersService, UserQueryRepository, UserRepository],
-  exports: [UsersService],
+  exports: [UsersService,UserQueryRepository,UserRepository],
 })
 export class UsersModule {}

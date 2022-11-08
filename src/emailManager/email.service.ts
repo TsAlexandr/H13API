@@ -26,7 +26,7 @@ export class EmailService {
     const result = await this.mailerService.sendMail({
       to: user.email,
       subject: 'Восстановление пароля',
-      template: './email-confirmation',
+      template: './recovery-password',
       context: {
         code: user.recoveryData.recoveryCode,
       },

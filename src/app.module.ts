@@ -11,7 +11,14 @@ import { CommentsModule } from './features/comments/comments.module';
 import { UsersModule } from './features/users/users.module';
 import { TestingModule } from './features/testing/testing.module';
 import { AuthModule } from './features/auth/auth.module';
-import { SecurityDevicesModule } from './features/security-devices/security-devices.module';
+import { SessionsModule } from './features/sessions/sessions.module';
+import { AuthService } from './features/auth/application/auth.service';
+import { BlogService } from './features/blogs/application/blog.service';
+import { CommentsService } from './features/comments/application/comments.service';
+import { PostsService } from './features/posts/application/posts.service';
+import { SessionsService } from './features/sessions/application/sessions.service';
+import { BlogQueryRepository } from './features/blogs/infrastructure/blog-query.repository';
+import { Blog, BlogSchema } from './features/blogs/entities/blogs.schema';
 
 mongoose.set('toJSON', {
   virtuals: true,
@@ -26,6 +33,7 @@ mongoose.set('toJSON', {
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.mongoURI),
+    MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema }]),
     BlogsModule,
     PostsModule,
     CommentsModule,
@@ -33,9 +41,9 @@ mongoose.set('toJSON', {
     EmailModule,
     TestingModule,
     AuthModule,
-    SecurityDevicesModule,
+    SessionsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, BlogQueryRepository],
 })
 export class AppModule {}

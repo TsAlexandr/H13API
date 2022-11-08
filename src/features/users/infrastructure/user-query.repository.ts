@@ -84,6 +84,11 @@ export class UserQueryRepository {
     return user;
   }
 
+  async getUserByCode(code:string):Promise<any>{
+    const user = await this.userModel.findOne({"emailConfirmation.confirmationCode":code})
+    return user
+  }
+
   async getUserByRecoveryCode(code: string): Promise<any> {
     const user = await this.userModel.findOne({
       'recoveryData.recoveryCode': code,

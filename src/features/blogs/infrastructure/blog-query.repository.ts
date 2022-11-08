@@ -2,7 +2,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Blog, BlogDocument } from '../entities/blogs.schema';
 import { Model, Schema } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import * as mongoose from 'mongoose';
 import { BlogQueryDto } from '../dto/blogQuery.dto';
 
 @Injectable()

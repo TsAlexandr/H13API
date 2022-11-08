@@ -6,6 +6,7 @@ import add from 'date-fns/add';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from '../../../emailManager/email.service';
 import {CreateUserDto} from "../dto/create-user.dto";
+import { LoginDto } from "../../auth/dto/login.dto";
 
 @Injectable()
 export class UsersService {
@@ -52,11 +53,11 @@ export class UsersService {
     return hash;
   }
 
-  async checkCredentials(login: string, password: string): Promise<any> {
-    const user = await this.userQueryRepo.findByLogin(login);
-    console.log('User in creds with login ---> ' + login);
+  async checkCredentials(loginDto:LoginDto/*login: string, password: string*/): Promise<any> {
+    const user = await this.userQueryRepo.findByLogin(loginDto.login);
+    console.log('User in creds with login ---> ' + loginDto.login);
     if (!user) return null;
-    const passwordHash = await this._generateHash(password, user.passwordSalt);
+    const passwordHash = await this._generateHash(loginDto.password, user.passwordSalt);
     if (user.passwordHash !== passwordHash) {
       return null;
     }

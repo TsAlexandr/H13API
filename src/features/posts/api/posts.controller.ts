@@ -50,7 +50,10 @@ export class PostsController {
     const blog = await this.blogQueryRepo.findBlogById(cpDto.blogId);
     if (!blog) throw new NotFoundException();
 
-    const post = await this.postService.createPost(cpDto, blog);
+    const post = await this.postService.createPost(cpDto, {
+      id: 1,
+      name: 'blog',
+    });
 
     if (!post) throw new NotFoundException();
 

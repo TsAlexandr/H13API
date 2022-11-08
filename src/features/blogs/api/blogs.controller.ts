@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { BlogQueryRepository } from '../infrastructure/blog-query.repository';
 import { BlogService } from '../application/blog.service';
@@ -17,6 +18,8 @@ import { CreateBlogDto } from '../dto/createBlog.dto';
 import { PostsService } from '../../posts/application/posts.service';
 import { PostsQueryRepository } from '../../posts/infrastructure/posts-query.repository';
 import { CreatePostByIdDto } from '../dto/createPostById.dto';
+import { BasicAuthGuard } from '../../../common/guards/basicAuth.guard';
+import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
 
 @Controller('blogs')
 export class BlogsController {
@@ -27,6 +30,7 @@ export class BlogsController {
     private postsQueryRepo: PostsQueryRepository,
   ) {}
 
+  @UseGuards(BasicAuthGuard)
   @Post()
   async createBlog(@Body() cbDto: CreateBlogDto) {
     return await this.blogsService.createBlog(cbDto);
@@ -47,6 +51,7 @@ export class BlogsController {
     return await this.postsQueryRepo.getPostsByBlogId(blogId, bqDto);
   }
 
+  @UseGuards(BasicAuthGuard)
   @Post('/:blogId/posts')
   async createPostByBlogId(
     @Param('blogId') blogId: string,
@@ -66,6 +71,7 @@ export class BlogsController {
     return blog;
   }
 
+  @UseGuards(BasicAuthGuard)
   @Put('/:id')
   @HttpCode(204)
   async updateBlog(@Param('id') id: string, @Body() cbDto: CreateBlogDto) {
@@ -78,6 +84,7 @@ export class BlogsController {
     return true;
   }
 
+  @UseGuards(BasicAuthGuard)
   @Delete('/:id')
   @HttpCode(204)
   async deleteBlog(@Param('id') id: string) {

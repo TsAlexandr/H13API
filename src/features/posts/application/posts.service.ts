@@ -5,6 +5,7 @@ import { CreatePostDto } from '../dto/createPost.dto';
 @Injectable()
 export class PostsService {
   constructor(protected postRepo: PostsRepository) {}
+
   async deletePost(id: string) {
     return this.postRepo.deletePost(id);
   }

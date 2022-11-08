@@ -1,6 +1,20 @@
-import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  Headers,
+  HttpCode,
+  NotFoundException,
+  Param,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { CommentsService } from '../application/comments.service';
 import { CommentsQueryRepository } from '../infrastucture/comments-query.repository';
+import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
+import { User } from '../../../common/decorators/user.decorator';
 
 @Controller('comments')
 export class CommentsController {
@@ -9,8 +23,27 @@ export class CommentsController {
     protected commentQueryRepo: CommentsQueryRepository,
   ) {}
 
+  @Put()
+  @HttpCode(204)
+  async makeLike(
+    @Param('commentId') id: string,
+    @User() user,
+    @Body('likeStatus') likeStatus: string,
+  ) {
+    const comment = await this.commentQueryRepo.getCommentById(
+      id /*, user.id*/,
+    );
+    if (!comment) {
+      throw new NotFoundException();
+    }
+    const result = await this.commentsService.makeLike(id, user.id, likeStatus);
+  }
+
   @Get(':id')
-  async getComment(@Param('id') id: string) {
+  async getComment(
+    @Headers('authorization') header: string,
+    @Param('id') id: string,
+  ) {
     //let currentUserId = new ObjectId();
     /*if(req.headers.authorization) {
             const token = req.headers.authorization.split(' ')[1]
@@ -29,40 +62,40 @@ export class CommentsController {
     }
     return comment;
   }
-  /*@Delete()
-    async deleteComment(req:Request, res:Response){
-        //@ts-ignore
-        const comment = await this.commentsService.getCommentByID(req.params.commentId, req.user.id);
-        if(!comment){
-            res.send(404)
-            return
-        }
-        //@ts-ignore
-        if(comment.userId.toString() !== req.user.userId.toString()){
-            res.send(403)
-            return
-        }
 
-        const isDeleted = await this.commentsService.deleteComment(comment.id)
-        res.send(204)
+  @UseGuards(BearerAuthGuard)
+  @Delete(':commentId')
+  async deleteComment(@Param('commentId') id: string, @User() user) {
+    const comment = await this.commentQueryRepo.getCommentById(id);
+    if (!comment) {
+      throw new NotFoundException();
+    }
+    /*if (comment.userId.toString() !== req.user.userId.toString()) {
+      throw new ForbiddenException();
+    }*/
+
+    const isDeleted = await this.commentsService.deleteComment(comment.id);
+  }
+
+  @UseGuards(BearerAuthGuard)
+  @Put(':commentId')
+  async updateComment(
+    @User() user,
+    @Param('commentId') id: string,
+    @Body('content') content: string,
+  ) {
+    const comment = await this.commentQueryRepo.getCommentById(id);
+    if (!comment) {
+      throw new NotFoundException();
     }
 
-    async updateComment(req:Request, res:Response){//@ts-ignore
-        const comment = await this.commentsService.getCommentByID(req.params.commentId, req.user.id);
-        if(!comment){
-            res.send(404)
-            return
-        }
-        console.log(comment.userId)
-        //@ts-ignore
-        console.log(req.user.userId)
-        //@ts-ignore
-        if(comment.userId.toString() !== req.user.userId.toString()){
-            res.send(403)
-            return
-        }
+    if (comment.userId.toString() !== user.id.toString()) {
+      throw new ForbiddenException();
+    }
 
-        const isModified = await this.commentsService.updateComment(comment.id, req.body.content)
-        res.send(204)
-    }*/
+    const isModified = await this.commentsService.updateComment(
+      comment.id,
+      content,
+    );
+  }
 }

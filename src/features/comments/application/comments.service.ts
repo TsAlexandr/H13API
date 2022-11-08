@@ -2,13 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { CommentsRepository } from '../infrastucture/comments.repository';
 import { CommentsQueryRepository } from '../infrastucture/comments-query.repository';
 import { ObjectId } from 'mongoose';
+import { LikesRepository } from '../infrastucture/likes.repository';
 
 @Injectable()
 export class CommentsService {
   constructor(
     protected commentRepo: CommentsRepository,
     protected commentQueryRepo: CommentsQueryRepository,
-  ) /*protected likesDbRepo:LikesRepo*/ {}
+    private likesRepo: LikesRepository,
+  ) {}
   async createComment(
     content: string,
     postId: string,
@@ -37,24 +39,26 @@ export class CommentsService {
     return await this.commentRepo.deleteAll();
   }
 
-  /*async makeLike(commentId:string, userId:ObjectId, status:string){
-    const commentIdDb = new ObjectId(commentId)
-    console.log("USERID")
-    console.log(userId)
-    const existedLike = await this.likesDbRepo.getLikeByCommentIdAndUserId(commentId,userId)
-    const likeInfo:{commentId:ObjectId, userId:ObjectId, status:string} = {
-      commentId:commentIdDb,
+  async makeLike(commentId: string, userId: string, status: string) {
+    const commentIdDb = commentId;
+    console.log('USERID');
+    console.log(userId);
+    const existedLike = await this.likesRepo.getLikeByCommentIdAndUserId(
+      commentId,
       userId,
-      status
-    }
-    console.log(likeInfo)
+    );
+    const likeInfo: { commentId: string; userId: string; status: string } = {
+      commentId: commentIdDb,
+      userId,
+      status,
+    };
+    console.log(likeInfo);
     let like = null;
-    if(existedLike){
-      like = await this.likesDbRepo.updateLike(likeInfo)
-    }
-    else{
-      like = await this.likesDbRepo.createLike(likeInfo);
+    if (existedLike) {
+      like = await this.likesRepo.updateLike(likeInfo);
+    } else {
+      like = await this.likesRepo.createLike(likeInfo);
     }
     return like;
-  }*/
+  }
 }

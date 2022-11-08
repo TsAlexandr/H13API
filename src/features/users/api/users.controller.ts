@@ -42,6 +42,9 @@ export class UsersController {
   @Delete('/:id')
   @HttpCode(204)
   async deleteUser(@Param('id') id: string) {
+    const user = await this.userQueryRepo.findById(id);
+    if (!user) throw new NotFoundException();
+
     const isDeleted = await this.userService.deleteUser(id);
     if (!isDeleted) throw new NotFoundException();
 

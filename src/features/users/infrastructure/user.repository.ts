@@ -13,7 +13,8 @@ export class UserRepository {
 
   async deleteUser(id: string) {
     console.log(id);
-    const result = await this.userModel.deleteOne({ id: id });
+
+    const result = await this.userModel.deleteOne({ _id: id });
     return result.deletedCount === 1;
   }
 

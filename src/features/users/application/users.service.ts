@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from '../../../emailManager/email.service';
-import {CreateUserDto} from "../dto/create-user.dto";
-import { LoginDto } from "../../auth/dto/login.dto";
+import { CreateUserDto } from '../dto/create-user.dto';
+import { LoginDto } from '../../auth/dto/login.dto';
 
 @Injectable()
 export class UsersService {
@@ -31,6 +31,11 @@ export class UsersService {
         expirationDate: add(new Date(), { hours: 1, minutes: 3 }),
         isConfirmed: false,
       },
+      banInfo: {
+        isBanned: false,
+        banDate: '',
+        banReason: '',
+      },
     };
 
     const createResult = await this.userRepo.createUser(newUser);
@@ -53,11 +58,16 @@ export class UsersService {
     return hash;
   }
 
-  async checkCredentials(loginDto:LoginDto/*login: string, password: string*/): Promise<any> {
+  async checkCredentials(
+    loginDto: LoginDto /*login: string, password: string*/,
+  ): Promise<any> {
     const user = await this.userQueryRepo.findByLogin(loginDto.login);
     console.log('User in creds with login ---> ' + loginDto.login);
     if (!user) return null;
-    const passwordHash = await this._generateHash(loginDto.password, user.passwordSalt);
+    const passwordHash = await this._generateHash(
+      loginDto.password,
+      user.passwordSalt,
+    );
     if (user.passwordHash !== passwordHash) {
       return null;
     }

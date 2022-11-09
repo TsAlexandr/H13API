@@ -10,7 +10,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
-      /*exceptionFactory: (errors) => {
+      exceptionFactory: (errors) => {
         const errorsForResp = [];
         errors.forEach((err) => {
           const keys = Object.keys(err.constraints);
@@ -21,11 +21,13 @@ async function bootstrap() {
             });
           });
         });
-      },*/
+
+        throw new BadRequestException(errorsForResp);
+      },
     }),
   );
   app.enableCors();
-  //app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(process.env.PORT || 7000);
 }
 bootstrap();

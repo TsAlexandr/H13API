@@ -72,7 +72,6 @@ export class AuthController {
     const session = await this.sessionService.createSession(user, ip, agent);
 
     if (!session) {
-      console.log('!!! NE SESSION !!! ');
       throw new UnauthorizedException();
     }
     res.cookie('refreshToken', session.refreshToken, {

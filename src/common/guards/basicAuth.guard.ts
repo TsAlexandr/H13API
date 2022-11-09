@@ -12,7 +12,7 @@ export class BasicAuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const req: Request = context.switchToHttp().getRequest();
     console.log('HEADERS');
-    console.log(req.header);
+    console.log(req.header('Authorization'));
     const header = req.header('Authorization');
     if (!header) {
       throw new UnauthorizedException();

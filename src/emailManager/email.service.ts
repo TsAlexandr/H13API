@@ -21,8 +21,6 @@ export class EmailService {
   }
 
   async sendRecoveryCode(user: any) {
-    console.log('user  ' + user.email);
-    console.log(this.mailerService);
     const result = await this.mailerService.sendMail({
       to: user.email,
       subject: 'Восстановление пароля',

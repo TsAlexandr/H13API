@@ -69,6 +69,10 @@ export class AuthController {
     if (!user) {
       throw new UnauthorizedException();
     }
+
+    if (user.banInfo.isBanned) {
+      throw new UnauthorizedException();
+    }
     const session = await this.sessionService.createSession(user, ip, agent);
 
     if (!session) {

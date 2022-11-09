@@ -92,7 +92,6 @@ export class UsersService {
   async deleteAll() {
     return this.userRepo.deleteAll();
   }
-
   async banUser(id: string, banDto: BanDto) {
     return this.userRepo.banUser(id, banDto);
   }

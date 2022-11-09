@@ -8,6 +8,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ import { UserQueryRepository } from '../infrastructure/user-query.repository';
 import { UserQueryDto } from '../dto/userQuery.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { BasicAuthGuard } from '../../../common/guards/basicAuth.guard';
+import { BanDto } from '../dto/ban.dto';
 
 @Controller('users')
 export class UsersController {
@@ -49,5 +51,11 @@ export class UsersController {
     if (!isDeleted) throw new NotFoundException();
 
     return isDeleted;
+  }
+
+  @UseGuards(BasicAuthGuard)
+  @Put(':id/ban')
+  async banUser(@Param('id') id: string, @Body() banDto: BanDto) {
+    await this.userService.banUser(id, banDto);
   }
 }

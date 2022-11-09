@@ -1,6 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../entities/user.schema';
+import { BanDto } from '../dto/ban.dto';
 
 export class UserRepository {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
@@ -70,5 +71,17 @@ export class UserRepository {
       },
     );
     return user;
+  }
+
+  async banUser(id: string, banDto: BanDto) {
+    const user = await this.userModel.findById(id);
+    if (!user) return false;
+
+    user.banInfo.isBanned = banDto.isBanned;
+    user.banInfo.banReason = banDto.banReason;
+    user.banInfo.banDate = new Date().toISOString();
+
+    user.save();
+    return true;
   }
 }

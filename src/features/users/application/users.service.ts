@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { EmailService } from '../../../emailManager/email.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoginDto } from '../../auth/dto/login.dto';
+import { BanDto } from '../dto/ban.dto';
 
 @Injectable()
 export class UsersService {
@@ -90,5 +91,9 @@ export class UsersService {
 
   async deleteAll() {
     return this.userRepo.deleteAll();
+  }
+
+  async banUser(id: string, banDto: BanDto) {
+    return this.userRepo.banUser(id, banDto);
   }
 }

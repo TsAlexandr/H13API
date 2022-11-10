@@ -1,4 +1,9 @@
-import { Injectable, NestMiddleware, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NestMiddleware,
+  NotFoundException,
+} from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { UserQueryRepository } from '../../features/users/infrastructure/user-query.repository';
 
@@ -10,7 +15,7 @@ export class CheckExistingUserMiddleware implements NestMiddleware {
     const userByEmail = await this.userQueryRepo.findByLogin(req.body.email);
     if (userByLogin || userByEmail) {
       console.log('Throw exception');
-      throw new NotFoundException();
+      throw new BadRequestException();
     }
     next();
   }

@@ -21,6 +21,6 @@ export class UsersModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CheckExistingUserMiddleware)
-      .forRoutes({ path: 'posts/registration', method: RequestMethod.POST });
+      .forRoutes({ path: 'auth/registration', method: RequestMethod.POST });
   }
 }

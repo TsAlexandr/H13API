@@ -19,7 +19,6 @@ import { PostsService } from '../../posts/application/posts.service';
 import { PostsQueryRepository } from '../../posts/infrastructure/posts-query.repository';
 import { CreatePostByIdDto } from '../dto/createPostById.dto';
 import { BasicAuthGuard } from '../../../common/guards/basicAuth.guard';
-import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
 
 @Controller('blogs')
 export class BlogsController {
@@ -90,6 +89,5 @@ export class BlogsController {
   async deleteBlog(@Param('id') id: string) {
     const isDeleted = await this.blogsService.deleteBlog(id);
     if (!isDeleted) throw new NotFoundException();
-    return true;
   }
 }

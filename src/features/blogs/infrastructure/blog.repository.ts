@@ -2,6 +2,7 @@ import { Blog, BlogDocument } from '../entities/blogs.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class BlogsRepo {
@@ -12,9 +13,12 @@ export class BlogsRepo {
     return createdBlog;
   }
 
-  async deleteBlog(id: string): Promise<boolean> {
-    const result = await this.blogModel.deleteOne({ id: id });
-    return result.deletedCount === 1;
+  async deleteBlog(id: string) {
+    console.log(id);
+    const dbId = new mongoose.Types.ObjectId(id);
+    console.log(dbId);
+    const result = await this.blogModel.findByIdAndDelete(dbId);
+    return result;
   }
 
   async updateBlog(

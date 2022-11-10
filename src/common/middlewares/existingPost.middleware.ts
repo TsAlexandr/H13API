@@ -11,7 +11,9 @@ export class CheckExistingPostMiddleware implements NestMiddleware {
     console.log(blog);
     if (!blog) {
       console.log('Throw exception');
-      throw new NotFoundException();
+      throw new NotFoundException([
+        { message: 'Post not exists', field: 'postId' },
+      ]);
     }
     next();
   }

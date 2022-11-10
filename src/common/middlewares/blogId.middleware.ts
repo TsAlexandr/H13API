@@ -11,7 +11,9 @@ export class CheckExistingBlogMiddleware implements NestMiddleware {
     console.log(blog);
     if (!blog) {
       console.log('Throw exception');
-      throw new NotFoundException();
+      throw new NotFoundException([
+        { message: 'Blog not exists', field: 'blodId' },
+      ]);
     }
     next();
   }

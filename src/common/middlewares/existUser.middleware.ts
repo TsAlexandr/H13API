@@ -13,9 +13,13 @@ export class CheckExistingUserMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const userByLogin = await this.userQueryRepo.findByLogin(req.body.login);
     const userByEmail = await this.userQueryRepo.findByLogin(req.body.email);
+    console.log(userByLogin);
+    console.log(userByEmail);
     if (userByLogin || userByEmail) {
       console.log('Throw exception');
-      throw new BadRequestException();
+      throw new BadRequestException([
+        { message: 'User already exists', field: 'email' },
+      ]);
     }
     next();
   }

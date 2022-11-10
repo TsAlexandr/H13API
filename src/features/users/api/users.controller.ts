@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from '../application/users.service';
@@ -18,6 +19,7 @@ import { UserQueryDto } from '../dto/userQuery.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { BasicAuthGuard } from '../../../common/guards/basicAuth.guard';
 import { BanDto } from '../dto/ban.dto';
+import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -57,7 +59,12 @@ export class UsersController {
   @UseGuards(BasicAuthGuard)
   @Put(':id/ban')
   @HttpCode(204)
-  async banUser(@Param('id') id: string, @Body() banDto: BanDto) {
+  async banUser(
+    @Param('id') id: string,
+    @Body() banDto: BanDto,
+    @Req() req: Request,
+  ) {
+    console.log(req.headers.authorization);
     //TODO: удалить все сессии пользователя, которого банят
     await this.userService.banUser(id, banDto);
   }

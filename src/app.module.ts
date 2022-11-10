@@ -12,13 +12,9 @@ import { UsersModule } from './features/users/users.module';
 import { TestingModule } from './features/testing/testing.module';
 import { AuthModule } from './features/auth/auth.module';
 import { SessionsModule } from './features/sessions/sessions.module';
-import { AuthService } from './features/auth/application/auth.service';
-import { BlogService } from './features/blogs/application/blog.service';
-import { CommentsService } from './features/comments/application/comments.service';
-import { PostsService } from './features/posts/application/posts.service';
-import { SessionsService } from './features/sessions/application/sessions.service';
 import { BlogQueryRepository } from './features/blogs/infrastructure/blog-query.repository';
 import { Blog, BlogSchema } from './features/blogs/entities/blogs.schema';
+import { JwtService } from './features/sessions/application/jwt.service';
 
 mongoose.set('toJSON', {
   virtuals: true,
@@ -44,6 +40,6 @@ mongoose.set('toJSON', {
     SessionsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, BlogQueryRepository],
+  providers: [AppService, BlogQueryRepository, JwtService],
 })
 export class AppModule {}

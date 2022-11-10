@@ -58,7 +58,7 @@ export class CommentsQueryRepository {
             as: 'dislikesCount',
           },
         },
-        {
+        /*{
           $lookup: {
             from: 'likes',
             localField: '_id',
@@ -73,7 +73,7 @@ export class CommentsQueryRepository {
             ],
             as: 'myStatus',
           },
-        },
+        },*/
         {
           $project: {
             _id: 0,

@@ -15,12 +15,15 @@ import { CheckExistingBlogForPostMiddleware } from '../../common/middlewares/blo
 import { BlogsModule } from '../blogs/blogs.module';
 import { BlogQueryRepository } from '../blogs/infrastructure/blog-query.repository';
 import { Blog, BlogSchema } from '../blogs/entities/blogs.schema';
+import { JwtService } from '../sessions/application/jwt.service';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Post.name, schema: PostSchema }]),
     MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema }]),
     CommentsModule,
+    UsersModule,
   ],
   controllers: [PostsController],
   providers: [
@@ -28,6 +31,7 @@ import { Blog, BlogSchema } from '../blogs/entities/blogs.schema';
     PostsQueryRepository,
     PostsRepository,
     BlogQueryRepository,
+    JwtService,
   ],
   exports: [PostsService, PostsQueryRepository, PostsRepository],
 })

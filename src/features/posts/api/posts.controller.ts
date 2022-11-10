@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  HttpException,
   NotFoundException,
   Param,
   Post,
@@ -21,14 +20,15 @@ import { BlogQueryRepository } from '../../blogs/infrastructure/blog-query.repos
 import { BasicAuthGuard } from '../../../common/guards/basicAuth.guard';
 import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
 import { CommentsService } from '../../comments/application/comments.service';
+import { User } from '../../../common/decorators/user.decorator';
 
 @Controller('posts')
 export class PostsController {
   constructor(
-    protected postService: PostsService,
-    protected postQueryRepo: PostsQueryRepository,
-    protected commentsQueryRepo: CommentsQueryRepository,
-    protected commentsService: CommentsService,
+    private postService: PostsService,
+    private postQueryRepo: PostsQueryRepository,
+    private commentsQueryRepo: CommentsQueryRepository,
+    private commentService: CommentsService,
     private blogQueryRepo: BlogQueryRepository,
   ) {}
 
@@ -48,36 +48,34 @@ export class PostsController {
   @Get(':postId/comments')
   async getCommentByPostId(
     @Param('postId') postId: string,
-    query: PostQueryDto,
+    @Query() query: PostQueryDto,
   ) {
-    const post = await this.postQueryRepo.findPostById(postId);
-    if (!post) throw new NotFoundException();
-
     const comments = await this.commentsQueryRepo.getCommentsByPostId(
       '',
       postId,
       query,
     );
-
     return comments;
   }
-
   @UseGuards(BearerAuthGuard)
   @Post(':postId/comments')
   @HttpCode(201)
-  async createCommentForPost(
+  async createComment(
     @Param('postId') postId: string,
+    //TODO: повесить проверку на поле content
     @Body('content') content: string,
+    //TODO: изменить тип переменной
+    @User() user: any,
   ) {
     const post = await this.postQueryRepo.findPostById(postId);
     if (!post) throw new NotFoundException();
 
-    const comment = await this.commentsService.createComment(
+    const comment = await this.commentService.createComment(
       content,
       postId,
-      '',
-      '',
+      user,
     );
+
     return comment;
   }
 

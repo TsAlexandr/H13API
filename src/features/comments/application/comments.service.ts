@@ -3,6 +3,8 @@ import { CommentsRepository } from '../infrastucture/comments.repository';
 import { CommentsQueryRepository } from '../infrastucture/comments-query.repository';
 import { ObjectId } from 'mongoose';
 import { LikesRepository } from '../infrastucture/likes.repository';
+import { LikesInfo } from '../entities/likesInfo.schema';
+import { Like } from '../entities/likes.schema';
 
 @Injectable()
 export class CommentsService {
@@ -11,18 +13,14 @@ export class CommentsService {
     protected commentQueryRepo: CommentsQueryRepository,
     private likesRepo: LikesRepository,
   ) {}
-  async createComment(
-    content: string,
-    postId: string,
-    userId: string,
-    userName: string,
-  ) {
+  async createComment(content: string, postId: string, user: any) {
     const newComment = {
       content: content,
       postId: postId,
-      userId: userId,
-      userLogin: userName,
+      userId: user.id,
+      userLogin: user.is,
       createdAt: new Date().toISOString(),
+      isBanned: user.banInfo.isBanned,
     };
 
     const createdComment = await this.commentRepo.createComment(newComment);
@@ -39,20 +37,24 @@ export class CommentsService {
     return await this.commentRepo.deleteAll();
   }
 
-  async makeLike(commentId: string, userId: string, status: string) {
+  async makeLike(commentId: string, user: any, status: string) {
     const commentIdDb = commentId;
     console.log('USERID');
-    console.log(userId);
+    console.log(user);
     const existedLike = await this.likesRepo.getLikeByCommentIdAndUserId(
       commentId,
-      userId,
+      user.id,
     );
-    const likeInfo: { commentId: string; userId: string; status: string } = {
-      commentId: commentIdDb,
-      userId,
+
+    const likeInfo = {
+      commentId,
+      userId: user.id,
+      login: user.login,
+      isBanned: user.banInfo.isBanned,
       status,
+      addedAt: new Date().toISOString(),
     };
-    console.log(likeInfo);
+
     let like = null;
     if (existedLike) {
       like = await this.likesRepo.updateLike(likeInfo);

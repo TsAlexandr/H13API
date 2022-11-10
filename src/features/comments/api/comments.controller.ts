@@ -37,7 +37,7 @@ export class CommentsController {
     if (!comment) {
       throw new NotFoundException();
     }
-    const result = await this.commentsService.makeLike(id, user.id, likeStatus);
+    const result = await this.commentsService.makeLike(id, user, likeStatus);
   }
 
   @Get(':id')

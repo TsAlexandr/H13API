@@ -7,7 +7,7 @@ export class Like {
   commentId: string;
 
   @Prop()
-  postId: string;
+  postId?: string;
 
   @Prop()
   addedAt: string;
@@ -20,6 +20,9 @@ export class Like {
 
   @Prop()
   status: string;
+
+  @Prop()
+  isBanned: boolean;
 }
 
 export const LikeSchema = SchemaFactory.createForClass(Like);

@@ -18,7 +18,7 @@ export class CommentsQueryRepository {
     postId: string,
     query: PostQueryDto,
   ) {
-    const { pageNumber, pageSize, sortDirection, sortBy } = query;
+    const { pageNumber, pageSize, sortBy, sortDirection } = query;
     const comments = await this.commentModel
       .aggregate([
         { $match: { postId: new mongoose.Types.ObjectId(postId) } },

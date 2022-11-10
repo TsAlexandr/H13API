@@ -15,6 +15,8 @@ export class Comment {
   @Prop()
   userLogin: string;
   @Prop()
+  isBanned: boolean;
+  @Prop()
   createdAt: Date;
   @Prop({ type: LikesInfoSchema })
   likesInfo: LikesInfo;

@@ -9,7 +9,10 @@ export class LikesRepository {
   async createLike(like: {
     commentId: string;
     userId: string;
+    login: string;
+    addedAt: string;
     status: string;
+    isBanned: string;
   }) {
     const createdLike = new this.likesModel(like);
     await createdLike.save();

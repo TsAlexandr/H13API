@@ -18,19 +18,51 @@ import { CreatePostDto } from '../dto/createPost.dto';
 import { CommentsQueryRepository } from '../../comments/infrastucture/comments-query.repository';
 import { BlogQueryRepository } from '../../blogs/infrastructure/blog-query.repository';
 import { BasicAuthGuard } from '../../../common/guards/basicAuth.guard';
+import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
+import { CommentsService } from '../../comments/application/comments.service';
+import { User } from '../../../common/decorators/user.decorator';
 
 @Controller('posts')
 export class PostsController {
   constructor(
-    protected postService: PostsService,
-    protected postQueryRepo: PostsQueryRepository,
-    protected commentsQueryRepo: CommentsQueryRepository,
+    private postService: PostsService,
+    private postQueryRepo: PostsQueryRepository,
+    private commentsQueryRepo: CommentsQueryRepository,
+    private commentService: CommentsService,
     private blogQueryRepo: BlogQueryRepository,
   ) {}
   @Get(':postId/comments')
-  async getCommentByPostId(@Param('postId') postId: string) {
-    /*const comments = await this.commentsQueryRepo.getCommentsByPostId(postId)
-        return comments*/
+  async getCommentByPostId(
+    @Param('postId') postId: string,
+    @Query() query: PostQueryDto,
+  ) {
+    const comments = await this.commentsQueryRepo.getCommentsByPostId(
+      '',
+      postId,
+      query,
+    );
+    return comments;
+  }
+  @UseGuards(BearerAuthGuard)
+  @Post(':postId/comments')
+  @HttpCode(201)
+  async createComment(
+    @Param('postId') postId: string,
+    //TODO: повесить проверку на поле content
+    @Body('content') content: string,
+    //TODO: изменить тип переменной
+    @User() user: any,
+  ) {
+    const post = await this.postQueryRepo.findPostById(postId);
+    if (!post) throw new NotFoundException();
+
+    const comment = await this.commentService.createComment(
+      content,
+      postId,
+      user,
+    );
+
+    return comment;
   }
 
   @Get()

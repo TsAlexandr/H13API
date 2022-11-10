@@ -2,6 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Comment, CommentDocument } from '../entities/comments.schema';
 import mongoose from 'mongoose';
+import { PostQueryDto } from '../../posts/dto/postQuery.dto';
 
 export class CommentsQueryRepository {
   constructor(
@@ -15,11 +16,9 @@ export class CommentsQueryRepository {
   async getCommentsByPostId(
     userId: string,
     postId: string,
-    pageNumber: number,
-    pageSize: number,
-    sortBy: string,
-    sortDirection: any,
+    query: PostQueryDto,
   ) {
+    const { pageNumber, pageSize, sortBy, sortDirection } = query;
     const comments = await this.commentModel
       .aggregate([
         { $match: { postId: new mongoose.Types.ObjectId(postId) } },
@@ -91,6 +90,8 @@ export class CommentsQueryRepository {
       ])
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
       .sort({ [sortBy]: sortDirection });
     const temp = comments.map((comment) => {
       const likesCountArr = comment.likesInfo.likesCount;

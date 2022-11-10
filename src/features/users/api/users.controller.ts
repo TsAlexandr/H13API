@@ -37,6 +37,7 @@ export class UsersController {
   @Post()
   async createUser(@Body() cuDto: CreateUserDto) {
     const createdUser = await this.userService.createUser(cuDto);
+    console.log(createdUser);
     return createdUser;
   }
 
@@ -55,7 +56,9 @@ export class UsersController {
 
   @UseGuards(BasicAuthGuard)
   @Put(':id/ban')
+  @HttpCode(204)
   async banUser(@Param('id') id: string, @Body() banDto: BanDto) {
+    //TODO: удалить все сессии пользователя, которого банят
     await this.userService.banUser(id, banDto);
   }
 }

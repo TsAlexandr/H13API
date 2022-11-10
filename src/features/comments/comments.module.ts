@@ -20,6 +20,6 @@ import { Like, LikeSchema } from './entities/likes.schema';
     CommentsQueryRepository,
     LikesRepository,
   ],
-  exports: [CommentsService, CommentsQueryRepository],
+  exports: [CommentsService, CommentsQueryRepository, LikesRepository],
 })
 export class CommentsModule {}

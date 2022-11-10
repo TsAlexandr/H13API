@@ -23,7 +23,8 @@ export class CommentsController {
     protected commentQueryRepo: CommentsQueryRepository,
   ) {}
 
-  @Put()
+  @UseGuards(BearerAuthGuard)
+  @Put(':commentId/like-status')
   @HttpCode(204)
   async makeLike(
     @Param('commentId') id: string,

@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
   NotFoundException,
   Param,
   Post,
@@ -18,6 +19,8 @@ import { CreatePostDto } from '../dto/createPost.dto';
 import { CommentsQueryRepository } from '../../comments/infrastucture/comments-query.repository';
 import { BlogQueryRepository } from '../../blogs/infrastructure/blog-query.repository';
 import { BasicAuthGuard } from '../../../common/guards/basicAuth.guard';
+import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
+import { CommentsService } from '../../comments/application/comments.service';
 
 @Controller('posts')
 export class PostsController {
@@ -25,12 +28,57 @@ export class PostsController {
     protected postService: PostsService,
     protected postQueryRepo: PostsQueryRepository,
     protected commentsQueryRepo: CommentsQueryRepository,
+    protected commentsService: CommentsService,
     private blogQueryRepo: BlogQueryRepository,
   ) {}
+
+  @UseGuards(BearerAuthGuard)
+  @Put(':postId/like-status')
+  @HttpCode(204)
+  async makeLike(
+    @Param('postId') id: string,
+    @Body('likeStatus') likeStatus: string,
+  ) {
+    const post = await this.postQueryRepo.findPostById(id);
+    if (!post) throw new NotFoundException();
+
+    await this.postService.makeLike(id, '', '', likeStatus);
+  }
+
   @Get(':postId/comments')
-  async getCommentByPostId(@Param('postId') postId: string) {
-    /*const comments = await this.commentsQueryRepo.getCommentsByPostId(postId)
-        return comments*/
+  async getCommentByPostId(
+    @Param('postId') postId: string,
+    query: PostQueryDto,
+  ) {
+    const post = await this.postQueryRepo.findPostById(postId);
+    if (!post) throw new NotFoundException();
+
+    const comments = await this.commentsQueryRepo.getCommentsByPostId(
+      '',
+      postId,
+      query,
+    );
+
+    return comments;
+  }
+
+  @UseGuards(BearerAuthGuard)
+  @Post(':postId/comments')
+  @HttpCode(201)
+  async createCommentForPost(
+    @Param('postId') postId: string,
+    @Body('content') content: string,
+  ) {
+    const post = await this.postQueryRepo.findPostById(postId);
+    if (!post) throw new NotFoundException();
+
+    const comment = await this.commentsService.createComment(
+      content,
+      postId,
+      '',
+      '',
+    );
+    return comment;
   }
 
   @Get()

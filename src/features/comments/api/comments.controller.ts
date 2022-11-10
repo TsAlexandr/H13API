@@ -65,6 +65,7 @@ export class CommentsController {
   }
 
   @UseGuards(BearerAuthGuard)
+  @HttpCode(204)
   @Delete(':commentId')
   async deleteComment(@Param('commentId') id: string, @User() user) {
     const comment = await this.commentQueryRepo.getCommentById(id);
@@ -80,6 +81,7 @@ export class CommentsController {
 
   @UseGuards(BearerAuthGuard)
   @Put(':commentId')
+  @HttpCode(204)
   async updateComment(
     @User() user,
     @Param('commentId') id: string,

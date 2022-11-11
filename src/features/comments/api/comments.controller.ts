@@ -73,9 +73,9 @@ export class CommentsController {
     if (!comment) {
       throw new NotFoundException();
     }
-    /*if (comment.userId.toString() !== req.user.userId.toString()) {
+    if (comment.userId.toString() !== user.id.toString()) {
       throw new ForbiddenException();
-    }*/
+    }
 
     const isDeleted = await this.commentsService.deleteComment(comment.id);
   }

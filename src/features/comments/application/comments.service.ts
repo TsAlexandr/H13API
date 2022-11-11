@@ -23,6 +23,8 @@ export class CommentsService {
       isBanned: user.banInfo.isBanned,
     };
 
+    console.log();
+
     const createdComment = await this.commentRepo.createComment(newComment);
     return createdComment;
   }

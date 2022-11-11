@@ -268,6 +268,7 @@ export class PostsQueryRepository {
       },
     ]);
 
+    console.log(post);
     const temp = post.map((p) => {
       const likesCountArr = p.extendedLikesInfo.likesCount;
       const dislikesCountArr = p.extendedLikesInfo.dislikesCount;

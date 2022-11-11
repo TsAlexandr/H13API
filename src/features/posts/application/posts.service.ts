@@ -39,34 +39,31 @@ export class PostsService {
   async deleteAllPosts() {
     return await this.postRepo.deleteAll();
   }
-  async makeLike(
-    postId: string,
-    userId: string,
-    userLogin: string,
-    status: string,
-  ) {
+  async makeLike(postId: string, user: any, status: string) {
     console.log('Make like for post! -->', postId);
     console.log(status);
     const postIdDb = postId;
     console.log('USERID');
-    console.log(userId);
+    console.log(user);
     const addedAt = new Date().toISOString();
     const existedLike = await this.likeRepo.getLikeByPostIdAndUserId(
       postId,
-      userId,
+      user.id,
     );
     const likeInfo: {
       postId: string;
       userId: string;
       login: string;
+      isBanned: boolean;
       addedAt: string;
       status: string;
     } = {
       postId: postIdDb,
-      userId,
-      login: userLogin,
+      userId: user.id,
+      login: user.login,
       addedAt,
       status,
+      isBanned: user.banInfo.isBanned,
     };
     console.log(likeInfo);
     let like = null;

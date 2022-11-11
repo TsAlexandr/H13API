@@ -39,6 +39,7 @@ export class LikesRepository {
   async createPostLike(like: {
     postId: string;
     userId: string;
+    isBanned: boolean;
     login: string;
     addedAt: string;
     status: string;

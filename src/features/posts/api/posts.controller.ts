@@ -38,11 +38,12 @@ export class PostsController {
   async makeLike(
     @Param('postId') id: string,
     @Body('likeStatus') likeStatus: string,
+    @User() user,
   ) {
     const post = await this.postQueryRepo.findPostById(id);
     if (!post) throw new NotFoundException();
 
-    await this.postService.makeLike(id, '', '', likeStatus);
+    await this.postService.makeLike(id, user, likeStatus);
   }
 
   @Get(':postId/comments')

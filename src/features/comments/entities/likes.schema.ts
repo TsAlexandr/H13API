@@ -1,19 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
 
 export type LikeDocument = Like & Document;
 @Schema()
 export class Like {
   @Prop()
-  commentId: string;
+  commentId: mongoose.Types.ObjectId;
 
   @Prop()
-  postId?: string;
+  postId?: mongoose.Types.ObjectId;
 
   @Prop()
   addedAt: string;
 
   @Prop()
-  userId: string;
+  userId: mongoose.Types.ObjectId;
 
   @Prop()
   login: string;

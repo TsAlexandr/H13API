@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { EmailModule } from '../../emailManager/emailModule';
 import { SessionsModule } from '../sessions/sessions.module';
 import { CheckExistingConfirmCodeMiddleware } from '../../common/middlewares/existConfirmCode.middleware';
+import { CheckExistingUserMiddleware } from '../../common/middlewares/existUser.middleware';
 
 @Module({
   imports: [ConfigModule, UsersModule, EmailModule, SessionsModule],
@@ -20,5 +21,12 @@ export class AuthModule {
       path: 'auth/registration-confirmation',
       method: RequestMethod.POST,
     });
+    consumer.apply(CheckExistingUserMiddleware).forRoutes(
+      {
+        path: 'auth/registration',
+        method: RequestMethod.POST,
+      },
+      { path: 'auth/registration-email-resending', method: RequestMethod.POST },
+    );
   }
 }

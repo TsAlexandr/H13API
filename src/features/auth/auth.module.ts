@@ -20,12 +20,9 @@ export class AuthModule {
       path: 'auth/registration-confirmation',
       method: RequestMethod.POST,
     });
-    consumer.apply(CheckExistingUserMiddleware).forRoutes(
-      {
-        path: 'auth/registration',
-        method: RequestMethod.POST,
-      },
-      { path: 'auth/registration-email-resending', method: RequestMethod.POST },
-    );
+    consumer.apply(CheckExistingUserMiddleware).forRoutes({
+      path: 'auth/registration',
+      method: RequestMethod.POST,
+    });
   }
 }

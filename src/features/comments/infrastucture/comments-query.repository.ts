@@ -31,6 +31,7 @@ export class CommentsQueryRepository {
               {
                 $match: {
                   status: 'Like',
+                  isBanned: false,
                 },
               },
               {
@@ -49,6 +50,7 @@ export class CommentsQueryRepository {
               {
                 $match: {
                   status: 'Dislike',
+                  isBanned: false,
                 },
               },
               {

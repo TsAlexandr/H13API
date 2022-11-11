@@ -36,9 +36,9 @@ import { UsersModule } from '../users/users.module';
   exports: [PostsService, PostsQueryRepository, PostsRepository],
 })
 export class PostsModule {
-  /*configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CheckExistingBlogForPostMiddleware)
       .forRoutes({ path: 'posts', method: RequestMethod.POST });
-  }*/
+  }
 }

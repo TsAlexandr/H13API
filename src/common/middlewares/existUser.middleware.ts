@@ -12,7 +12,7 @@ export class CheckExistingUserMiddleware implements NestMiddleware {
   constructor(private userQueryRepo: UserQueryRepository) {}
   async use(req: Request, res: Response, next: NextFunction) {
     const userByLogin = await this.userQueryRepo.findByLogin(req.body.login);
-    const userByEmail = await this.userQueryRepo.findByLogin(req.body.email);
+    const userByEmail = await this.userQueryRepo.getByEmail(req.body.email);
     console.log(userByLogin);
     console.log(userByEmail);
     if (userByLogin || userByEmail) {

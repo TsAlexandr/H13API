@@ -123,13 +123,30 @@ export class PostsQueryRepository {
 
     const totalCount = await this.postModel.countDocuments();
 
+    const temp = posts.map((post) => {
+      const likesCountArr = post.extendedLikesInfo.likesCount;
+      const dislikesCountArr = post.extendedLikesInfo.dislikesCount;
+      const myStatusArr = post.extendedLikesInfo.myStatus;
+      console.log(post.extendedLikesInfo);
+
+      const extendedLikesInfo = {
+        likesCount: likesCountArr.length ? likesCountArr[0].count : 0,
+        dislikesCount: dislikesCountArr.length ? dislikesCountArr[0].count : 0,
+        myStatus:
+          'None' /*myStatusArr.length ? myStatusArr[0].status : 'None',*/,
+        newestLikes: post.extendedLikesInfo.newestLikes,
+      };
+      post.extendedLikesInfo = extendedLikesInfo;
+      return post;
+    });
+
     console.log(pageSize);
     const outputObj = {
       pagesCount: Math.ceil(totalCount / pageSize),
       page: pageNumber,
       pageSize: pageSize,
       totalCount: totalCount,
-      items: posts,
+      items: temp,
     };
     return outputObj;
   }
@@ -392,6 +409,7 @@ export class PostsQueryRepository {
       p.extendedLikesInfo = extendedLikesInfo;
       return p;
     });
+
     const totalCount: number = await this.postModel.count({
       blogId: blogId,
     });

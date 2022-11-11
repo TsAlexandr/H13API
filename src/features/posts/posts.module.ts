@@ -15,6 +15,7 @@ import { BlogQueryRepository } from '../blogs/infrastructure/blog-query.reposito
 import { Blog, BlogSchema } from '../blogs/entities/blogs.schema';
 import { JwtService } from '../sessions/application/jwt.service';
 import { UsersModule } from '../users/users.module';
+import { CheckExistingBlogForPostMiddleware } from '../../common/middlewares/blogIdInBody.middleware';
 
 @Module({
   imports: [
@@ -34,9 +35,9 @@ import { UsersModule } from '../users/users.module';
   exports: [PostsService, PostsQueryRepository, PostsRepository],
 })
 export class PostsModule {
-  /*configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CheckExistingBlogForPostMiddleware)
       .forRoutes({ path: 'posts', method: RequestMethod.POST });
-  }*/
+  }
 }

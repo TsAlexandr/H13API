@@ -3,6 +3,7 @@ import { Blog, BlogDocument } from '../entities/blogs.schema';
 import { Model, Schema } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { BlogQueryDto } from '../dto/blogQuery.dto';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class BlogQueryRepository {
@@ -42,7 +43,8 @@ export class BlogQueryRepository {
   }
 
   async findBlogById(id: string): Promise<any> {
-    const blog = await this.blogModel.findById(id);
+    console.log(id);
+    const blog = await this.blogModel.findOne({ _id: id });
     return blog;
   }
 }

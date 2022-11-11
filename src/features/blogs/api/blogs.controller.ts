@@ -66,6 +66,7 @@ export class BlogsController {
   @Get('/:id')
   async getBlogById(@Param('id') id: string) {
     const blog = await this.blogQueryRepo.findBlogById(id);
+    console.log(blog);
     if (!blog) throw new NotFoundException();
     return blog;
   }

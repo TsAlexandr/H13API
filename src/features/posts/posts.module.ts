@@ -35,9 +35,9 @@ import { CheckExistingBlogForPostMiddleware } from '../../common/middlewares/blo
   exports: [PostsService, PostsQueryRepository, PostsRepository],
 })
 export class PostsModule {
-  configure(consumer: MiddlewareConsumer) {
+  /*configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CheckExistingBlogForPostMiddleware)
       .forRoutes({ path: 'posts', method: RequestMethod.POST });
-  }
+  }*/
 }

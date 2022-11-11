@@ -110,7 +110,7 @@ export class CommentsQueryRepository {
     const { pageNumber, pageSize, sortBy, sortDirection } = query;
     const comments = await this.commentModel
       .aggregate([
-        { $match: { postId: new mongoose.Types.ObjectId(postId) } },
+        { $match: { postId: postId } },
         {
           $lookup: {
             from: 'likes',
@@ -208,7 +208,7 @@ export class CommentsQueryRepository {
       page: pageNumber,
       pageSize: pageSize,
       totalCount: totalCount,
-      items: comments,
+      items: temp,
     };
   }
 }

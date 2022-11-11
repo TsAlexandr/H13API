@@ -3,6 +3,7 @@ import { User, UserDocument } from '../entities/user.schema';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { UserQueryDto } from '../dto/userQuery.dto';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class UserQueryRepository {
@@ -25,7 +26,9 @@ export class UserQueryRepository {
   }
 
   async findById(id: string) {
-    const user = await this.userModel.findById(id);
+    const user = await this.userModel.findOne({
+      _id: new mongoose.Types.ObjectId(id),
+    });
     console.log('Repo');
     console.log(user);
     return user;

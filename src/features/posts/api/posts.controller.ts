@@ -59,6 +59,7 @@ export class PostsController {
     );
     return comments;
   }
+
   @UseGuards(BearerAuthGuard)
   @Post(':postId/comments')
   @HttpCode(201)
@@ -71,6 +72,7 @@ export class PostsController {
   ) {
     const post = await this.postQueryRepo.getPostById(postId);
     console.log(post);
+    console.log(user);
     if (!post) throw new NotFoundException();
 
     const comment = await this.commentService.createComment(

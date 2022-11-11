@@ -76,7 +76,10 @@ export class AuthService {
     let user = await this.userQueryRepo.getByEmail(email);
     console.log('RESEND ');
     if (!user) {
-      return null;
+      return false;
+    }
+    if (user.emailConfirmation.isConfirmed) {
+      return false;
     }
     const confirmCode = uuidv4();
     const updateRes = await this.userRepo.updateConfirmationCode(
@@ -85,6 +88,6 @@ export class AuthService {
     );
     user = await this.userQueryRepo.getByEmail(email);
     const result = await this.mailService.sendConfirmation(user);
-    return result;
+    return true;
   }
 }

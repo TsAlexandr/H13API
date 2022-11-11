@@ -133,7 +133,11 @@ export class AuthController {
   @Post('registration-email-resending')
   @HttpCode(204)
   async resendEmailConfirmation(@Body('email') email: string) {
-    await this.authService.resendConfirmCode(email);
+    const resend = await this.authService.resendConfirmCode(email);
+    if (!resend)
+      throw new BadRequestException([
+        { message: 'Email has already confirmed', field: 'email' },
+      ]);
   }
 
   @Post('logout')

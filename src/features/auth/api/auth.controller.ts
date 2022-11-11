@@ -113,7 +113,10 @@ export class AuthController {
     const result = await this.authService.confirmEmail(code);
 
     console.log(result);
-    if (!result) throw new BadRequestException();
+    if (!result)
+      throw new BadRequestException([
+        { message: 'Email is confirmed', field: 'code' },
+      ]);
     return result;
   }
 

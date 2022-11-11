@@ -64,6 +64,8 @@ export class UsersController {
     @Body() banDto: BanDto,
     @Req() req: Request,
   ) {
+    console.log('Headers in put method');
+    console.log(req.headers);
     console.log(req.headers.authorization);
     //TODO: удалить все сессии пользователя, которого банят
     await this.userService.banUser(id, banDto);

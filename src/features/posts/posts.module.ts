@@ -11,8 +11,6 @@ import { Post, PostSchema } from './entities/posts.schema';
 import { PostsRepository } from './infrastructure/posts.repository';
 import { PostsQueryRepository } from './infrastructure/posts-query.repository';
 import { CommentsModule } from '../comments/comments.module';
-import { CheckExistingBlogForPostMiddleware } from '../../common/middlewares/blogIdInBody.middleware';
-import { BlogsModule } from '../blogs/blogs.module';
 import { BlogQueryRepository } from '../blogs/infrastructure/blog-query.repository';
 import { Blog, BlogSchema } from '../blogs/entities/blogs.schema';
 import { JwtService } from '../sessions/application/jwt.service';

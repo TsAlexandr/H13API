@@ -56,19 +56,23 @@ export class PostsQueryRepository {
             as: 'dislikesCount',
           },
         },
-        /*{
-        $lookup: {
-          from: "likes",
-          localField: "_id",
-          foreignField: "postId",
-          pipeline: [{
-            $match: { "userId": new ObjectId(userId) }
-          }, {
-            $project: { _id: 0, "status": 1 }
-          }],
-          as: "myStatus"
-        }
-      }, */ {
+        {
+          $lookup: {
+            from: 'likes',
+            localField: '_id',
+            foreignField: 'postId',
+            pipeline: [
+              {
+                $match: { userId: new mongoose.Types.ObjectId() },
+              },
+              {
+                $project: { _id: 0, status: 1 },
+              },
+            ],
+            as: 'myStatus',
+          },
+        },
+        {
           $lookup: {
             from: 'likes',
             localField: '_id',
@@ -198,14 +202,14 @@ export class PostsQueryRepository {
           as: 'dislikesCount',
         },
       },
-      /*{
+      {
         $lookup: {
           from: 'likes',
           localField: '_id',
           foreignField: 'postId',
           pipeline: [
             {
-              $match: { userId: new mongoose.Types.ObjectId(userId) },
+              $match: { userId: new mongoose.Types.ObjectId() },
             },
             {
               $project: { _id: 0, status: 1 },
@@ -213,7 +217,7 @@ export class PostsQueryRepository {
           ],
           as: 'myStatus',
         },
-      },*/
+      },
       {
         $lookup: {
           from: 'likes',
@@ -327,19 +331,23 @@ export class PostsQueryRepository {
             as: 'dislikesCount',
           },
         },
-        /*{
-        $lookup: {
-          from: "likes",
-          localField: "_id",
-          foreignField: "postId",
-          pipeline: [{
-            $match: { "userId": new ObjectId(userId) }
-          }, {
-            $project: { _id: 0, "status": 1 }
-          }],
-          as: "myStatus"
-        }
-      }, */ {
+        {
+          $lookup: {
+            from: 'likes',
+            localField: '_id',
+            foreignField: 'postId',
+            pipeline: [
+              {
+                $match: { userId: new mongoose.Types.ObjectId() },
+              },
+              {
+                $project: { _id: 0, status: 1 },
+              },
+            ],
+            as: 'myStatus',
+          },
+        },
+        {
           $lookup: {
             from: 'likes',
             localField: '_id',

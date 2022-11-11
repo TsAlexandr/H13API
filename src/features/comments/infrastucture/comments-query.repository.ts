@@ -60,14 +60,14 @@ export class CommentsQueryRepository {
             as: 'dislikesCount',
           },
         },
-        /*{
+        {
           $lookup: {
             from: 'likes',
             localField: '_id',
             foreignField: 'commentId',
             pipeline: [
               {
-                $match: { userId: new mongoose.Types.ObjectId(userId) },
+                $match: { userId: new mongoose.Types.ObjectId() },
               },
               {
                 $project: { _id: 0, status: 1 },
@@ -75,7 +75,7 @@ export class CommentsQueryRepository {
             ],
             as: 'myStatus',
           },
-        },*/
+        },
         {
           $project: {
             _id: 0,

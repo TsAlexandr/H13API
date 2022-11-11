@@ -15,6 +15,7 @@ import { CommentsService } from '../application/comments.service';
 import { CommentsQueryRepository } from '../infrastucture/comments-query.repository';
 import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
 import { User } from '../../../common/decorators/user.decorator';
+import { UpdateCommentDto } from '../dto/updateComment.dto';
 
 @Controller('comments')
 export class CommentsController {
@@ -85,7 +86,7 @@ export class CommentsController {
   async updateComment(
     @User() user,
     @Param('commentId') id: string,
-    @Body('content') content: string,
+    @Body() ucDto: UpdateCommentDto,
   ) {
     const comment = await this.commentQueryRepo.getCommentById(id);
     if (!comment) {
@@ -98,7 +99,7 @@ export class CommentsController {
 
     const isModified = await this.commentsService.updateComment(
       comment.id,
-      content,
+      ucDto.content,
     );
   }
 }

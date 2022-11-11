@@ -21,6 +21,7 @@ import { BasicAuthGuard } from '../../../common/guards/basicAuth.guard';
 import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
 import { CommentsService } from '../../comments/application/comments.service';
 import { User } from '../../../common/decorators/user.decorator';
+import { UpdateCommentDto } from '../../comments/dto/updateComment.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -64,7 +65,7 @@ export class PostsController {
   async createComment(
     @Param('postId') postId: string,
     //TODO: повесить проверку на поле content
-    @Body('content') content: string,
+    @Body() ucDto: UpdateCommentDto,
     //TODO: изменить тип переменной
     @User() user: any,
   ) {
@@ -72,7 +73,7 @@ export class PostsController {
     if (!post) throw new NotFoundException();
 
     const comment = await this.commentService.createComment(
-      content,
+      ucDto.content,
       postId,
       user,
     );

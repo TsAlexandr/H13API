@@ -12,8 +12,15 @@ export class CheckExistingConfirmCodeMiddleware implements NestMiddleware {
   constructor(private userQueryRepo: UserQueryRepository) {}
   async use(req: Request, res: Response, next: NextFunction) {
     const user = await this.userQueryRepo.getUserByCode(req.body.code);
+    if (!user)
+      throw new NotFoundException([
+        {
+          message: 'Code is incorrect, expired or already been applied',
+          field: 'code',
+        },
+      ]);
     const expiredDate = new Date(user.emailConfirmation.expiredDate);
-    if (!user || expiredDate < new Date()) {
+    if (expiredDate < new Date()) {
       console.log('Throw exception');
       throw new BadRequestException([
         {

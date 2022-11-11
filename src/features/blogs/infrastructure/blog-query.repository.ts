@@ -44,7 +44,8 @@ export class BlogQueryRepository {
 
   async findBlogById(id: string): Promise<any> {
     console.log(id);
-    const blog = await this.blogModel.findOne({ _id: id });
+    const blogId = new mongoose.Types.ObjectId(id);
+    const blog = await this.blogModel.findOne({ _id: blogId });
     return blog;
   }
 }

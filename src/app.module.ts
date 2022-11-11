@@ -15,6 +15,7 @@ import { SessionsModule } from './features/sessions/sessions.module';
 import { BlogQueryRepository } from './features/blogs/infrastructure/blog-query.repository';
 import { Blog, BlogSchema } from './features/blogs/entities/blogs.schema';
 import { JwtService } from './features/sessions/application/jwt.service';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 mongoose.set('toJSON', {
   virtuals: true,
@@ -28,6 +29,10 @@ mongoose.set('toJSON', {
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    /*ThrottlerModule.forRoot({
+      ttl: 10,
+      limit: 5,
+    }),*/
     MongooseModule.forRoot(process.env.mongoURI),
     MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema }]),
     BlogsModule,

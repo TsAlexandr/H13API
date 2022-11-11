@@ -58,7 +58,7 @@ export class CommentsController {
                 if(user){currentUserId = user.id}
             }
         }*/
-    const comment = await this.commentQueryRepo.getCommentById(id);
+    const comment = await this.commentQueryRepo.getCommentByIdWithLikes(id); //.getCommentById(id);
     if (!comment) {
       throw new NotFoundException();
     }

@@ -154,6 +154,11 @@ export class PostsQueryRepository {
     };
     return outputObj;
   }
+
+  async getPostById(id: string) {
+    const post = await this.postModel.findOne({ _id: id });
+    return post;
+  }
   async findPostById(id: string | null) {
     if (!id) {
       return null;

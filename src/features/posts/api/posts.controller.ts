@@ -69,7 +69,8 @@ export class PostsController {
     //TODO: изменить тип переменной
     @User() user: any,
   ) {
-    const post = await this.postQueryRepo.findPostById(postId);
+    const post = await this.postQueryRepo.getPostById(postId);
+    console.log(post);
     if (!post) throw new NotFoundException();
 
     const comment = await this.commentService.createComment(

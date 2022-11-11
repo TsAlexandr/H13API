@@ -1,7 +1,6 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AuthController } from './api/auth.controller';
 import { AuthService } from './application/auth.service';
-import { JwtService } from '../sessions/application/jwt.service';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '../users/users.module';
 import { EmailModule } from '../../emailManager/emailModule';

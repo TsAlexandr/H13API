@@ -77,9 +77,13 @@ export class UserRepository {
     const user = await this.userModel.findById(id);
     if (!user) return false;
 
+    user.banInfo.banReason = null;
+    user.banInfo.banDate = null;
     user.banInfo.isBanned = banDto.isBanned;
-    user.banInfo.banReason = banDto.banReason;
-    user.banInfo.banDate = new Date().toISOString();
+    if (banDto.isBanned) {
+      user.banInfo.banReason = banDto.banReason;
+      user.banInfo.banDate = new Date().toISOString();
+    }
 
     user.save();
     return true;

@@ -14,7 +14,7 @@ export class CheckExistingConfirmCodeMiddleware implements NestMiddleware {
     const user = await this.userQueryRepo.getUserByCode(req.body.code);
     if (!user) {
       console.log("user doens't exist");
-      throw new NotFoundException([
+      throw new BadRequestException([
         {
           message: 'Code is incorrect, expired or already been applied',
           field: 'code',

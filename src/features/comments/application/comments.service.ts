@@ -36,6 +36,10 @@ export class CommentsService {
     return await this.commentRepo.updateComment(id, content);
   }
 
+  async updateCommentBanInfo(user) {
+    return this.commentRepo.updateUserInfo(user);
+  }
+
   async deleteAllComments() {
     return await this.commentRepo.deleteAll();
   }

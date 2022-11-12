@@ -8,6 +8,7 @@ import { EmailService } from '../../../emailManager/email.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoginDto } from '../../auth/dto/login.dto';
 import { BanDto } from '../dto/ban.dto';
+import { CommentsService } from '../../comments/application/comments.service';
 
 @Injectable()
 export class UsersService {
@@ -15,6 +16,7 @@ export class UsersService {
     protected mailService: EmailService,
     protected userQueryRepo: UserQueryRepository,
     protected userRepo: UserRepository,
+    private commentsService: CommentsService,
   ) {}
   async createUser(cuDto: CreateUserDto): Promise<any> {
     console.log('create user');
@@ -93,6 +95,13 @@ export class UsersService {
     return this.userRepo.deleteAll();
   }
   async banUser(id: string, banDto: BanDto) {
-    return this.userRepo.banUser(id, banDto);
+    const bannedUser = await this.userRepo.banUser(id, banDto);
+
+    const user = await this.userQueryRepo.findById(id);
+    const comments = await this.commentsService.updateCommentBanInfo(
+      bannedUser,
+    );
+
+    return bannedUser;
   }
 }

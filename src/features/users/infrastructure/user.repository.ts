@@ -86,6 +86,6 @@ export class UserRepository {
     }
 
     user.save();
-    return true;
+    return user;
   }
 }

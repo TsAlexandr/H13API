@@ -86,16 +86,22 @@ export class CommentsController {
   @UseGuards(BearerAuthGuard)
   @HttpCode(204)
   @Delete(':commentId')
-  async deleteComment(@Param('commentId') id: string, @User() user) {
+  async deleteComment(
+    @Param('commentId') id: string,
+    @User() user,
+    @Req() req: Request,
+  ) {
     const comment = await this.commentQueryRepo.getCommentById(id);
     if (!comment) {
       throw new NotFoundException();
     }
-    if (comment.userId.toString() !== user.id.toString()) {
+
+    if (comment.userId.toString() !== user._id.toString()) {
       throw new ForbiddenException();
     }
 
     const isDeleted = await this.commentsService.deleteComment(comment.id);
+    if (!isDeleted) throw new NotFoundException();
   }
 
   @UseGuards(BearerAuthGuard)

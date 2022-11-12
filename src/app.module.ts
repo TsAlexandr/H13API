@@ -32,7 +32,7 @@ mongoose.set('toJSON', {
     }),
     ThrottlerModule.forRoot({
       ttl: 10,
-      limit: 5,
+      limit: 4,
     }),
     MongooseModule.forRoot(process.env.mongoURI),
     MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema }]),

@@ -12,14 +12,18 @@ import { BlogsRepo } from './infrastructure/blog.repository';
 import { BlogQueryRepository } from './infrastructure/blog-query.repository';
 import { PostsModule } from '../posts/posts.module';
 import { CheckExistingBlogMiddleware } from '../../common/middlewares/blogId.middleware';
+import { JwtService } from '../sessions/application/jwt.service';
+import { UserQueryRepository } from '../users/infrastructure/user-query.repository';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema }]),
     PostsModule,
+    UsersModule,
   ],
   controllers: [BlogsController],
-  providers: [BlogService, BlogsRepo, BlogQueryRepository],
+  providers: [BlogService, BlogsRepo, BlogQueryRepository, JwtService],
   exports: [BlogService, BlogsRepo],
 })
 export class BlogsModule {

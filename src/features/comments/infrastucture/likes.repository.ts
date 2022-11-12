@@ -1,14 +1,15 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Like, LikeDocument } from '../entities/likes.schema';
+import * as mongoose from 'mongoose';
 
 export class LikesRepository {
   constructor(
     @InjectModel(Like.name) private likesModel: Model<LikeDocument>,
   ) {}
   async createLike(like: {
-    commentId: string;
-    userId: string;
+    commentId: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
     login: string;
     addedAt: string;
     status: string;
@@ -20,8 +21,8 @@ export class LikesRepository {
   }
 
   async updateLike(like: {
-    commentId: string;
-    userId: string;
+    commentId: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
     status: string;
   }) {
     const existedLike = await this.likesModel.findOne({
@@ -37,8 +38,8 @@ export class LikesRepository {
   }
 
   async createPostLike(like: {
-    postId: string;
-    userId: string;
+    postId: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
     isBanned: boolean;
     login: string;
     addedAt: string;
@@ -51,14 +52,14 @@ export class LikesRepository {
   }
 
   async updatePostLike(like: {
-    postId: string;
-    userId: string;
+    postId: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
     login: string;
     addedAt: string;
     status: string;
   }) {
     const existedLike = await this.likesModel.findOne({
-      postId: like.postId,
+      postId: like.postId.toString(),
       userId: like.userId,
     });
     if (!existedLike) {

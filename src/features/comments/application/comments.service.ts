@@ -5,6 +5,7 @@ import { ObjectId } from 'mongoose';
 import { LikesRepository } from '../infrastucture/likes.repository';
 import { LikesInfo } from '../entities/likesInfo.schema';
 import { Like } from '../entities/likes.schema';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class CommentsService {
@@ -49,8 +50,8 @@ export class CommentsService {
     );
 
     const likeInfo = {
-      commentId,
-      userId: user.id,
+      commentId: new mongoose.Types.ObjectId(commentId),
+      userId: new mongoose.Types.ObjectId(user.id),
       login: user.login,
       isBanned: user.banInfo.isBanned,
       status,

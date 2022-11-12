@@ -8,7 +8,7 @@ export class Like {
   commentId: mongoose.Types.ObjectId;
 
   @Prop()
-  postId?: mongoose.Types.ObjectId;
+  postId: mongoose.Types.ObjectId;
 
   @Prop()
   addedAt: string;

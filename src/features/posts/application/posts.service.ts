@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePostByIdDto } from '../../blogs/dto/createPostById.dto';
 import { CreatePostDto } from '../dto/createPost.dto';
 import { LikesRepository } from '../../comments/infrastucture/likes.repository';
+import * as mongoose from 'mongoose';
 @Injectable()
 export class PostsService {
   constructor(
@@ -51,15 +52,15 @@ export class PostsService {
       user.id,
     );
     const likeInfo: {
-      postId: string;
-      userId: string;
+      postId: mongoose.Types.ObjectId;
+      userId: mongoose.Types.ObjectId;
       login: string;
       isBanned: boolean;
       addedAt: string;
       status: string;
     } = {
-      postId: postIdDb,
-      userId: user.id,
+      postId: new mongoose.Types.ObjectId(postId),
+      userId: new mongoose.Types.ObjectId(user.id),
       login: user.login,
       addedAt,
       status,

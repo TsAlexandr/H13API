@@ -232,7 +232,7 @@ export class PostsQueryRepository {
             {
               $match: {
                 status: 'Like',
-                isBanned: null,
+                isBanned: false,
               },
             },
             {

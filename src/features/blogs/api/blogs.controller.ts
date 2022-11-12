@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { BlogQueryRepository } from '../infrastructure/blog-query.repository';
@@ -19,6 +20,10 @@ import { PostsService } from '../../posts/application/posts.service';
 import { PostsQueryRepository } from '../../posts/infrastructure/posts-query.repository';
 import { CreatePostByIdDto } from '../dto/createPostById.dto';
 import { BasicAuthGuard } from '../../../common/guards/basicAuth.guard';
+import { Request } from 'express';
+import mongoose from 'mongoose';
+import { JwtService } from '../../sessions/application/jwt.service';
+import { UserQueryRepository } from '../../users/infrastructure/user-query.repository';
 
 @Controller('blogs')
 export class BlogsController {
@@ -27,6 +32,8 @@ export class BlogsController {
     protected blogQueryRepo: BlogQueryRepository,
     private postCUService: PostsService,
     private postsQueryRepo: PostsQueryRepository,
+    private jwtService: JwtService,
+    private userQueryRepo: UserQueryRepository,
   ) {}
 
   @UseGuards(BasicAuthGuard)
@@ -45,9 +52,28 @@ export class BlogsController {
   async getAllPostsByBlogId(
     @Param('blogId') blogId: string,
     @Query() bqDto: BlogQueryDto,
+    @Req() req: Request,
   ) {
+    let currentUserId = new mongoose.Types.ObjectId();
+    if (req.headers.authorization) {
+      const token = req.headers.authorization.split(' ')[1];
+      console.log(token);
+      const userId = await this.jwtService.getUserByAccessToken(token);
+      console.log('UserId = ' + userId);
+
+      if (userId) {
+        const user = await this.userQueryRepo.findById(userId.toString());
+        if (user) {
+          currentUserId = user.id;
+        }
+      }
+    }
     console.log(bqDto);
-    return await this.postsQueryRepo.getPostsByBlogId(blogId, bqDto);
+    return await this.postsQueryRepo.getPostsByBlogId(
+      blogId,
+      bqDto,
+      currentUserId,
+    );
   }
 
   @UseGuards(BasicAuthGuard)

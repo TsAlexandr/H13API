@@ -290,7 +290,11 @@ export class PostsQueryRepository {
     return temp[0];
   }
 
-  async getPostsByBlogId(blogId: string, bqDto: BlogQueryDto) {
+  async getPostsByBlogId(
+    blogId: string,
+    bqDto: BlogQueryDto,
+    currentId: mongoose.Types.ObjectId,
+  ) {
     console.log(blogId);
     const { pageNumber, pageSize, sortBy, sortDirection } = bqDto;
 
@@ -342,7 +346,7 @@ export class PostsQueryRepository {
             foreignField: 'postId',
             pipeline: [
               {
-                $match: { userId: new mongoose.Types.ObjectId() },
+                $match: { userId: new mongoose.Types.ObjectId(currentId) },
               },
               {
                 $project: { _id: 0, status: 1 },

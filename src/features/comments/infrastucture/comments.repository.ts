@@ -11,6 +11,8 @@ export class CommentsRepository {
     const createdComment = new this.commentModel(comment);
     await createdComment.save();
 
+    delete createdComment.isBanned;
+    delete createdComment.postId;
     createdComment.likesInfo = {
       likesCount: 0,
       dislikesCount: 0,

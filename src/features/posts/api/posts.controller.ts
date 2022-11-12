@@ -22,6 +22,7 @@ import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
 import { CommentsService } from '../../comments/application/comments.service';
 import { User } from '../../../common/decorators/user.decorator';
 import { UpdateCommentDto } from '../../comments/dto/updateComment.dto';
+import { LikeStatusDto } from '../../comments/dto/likeStatus.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -38,13 +39,13 @@ export class PostsController {
   @HttpCode(204)
   async makeLike(
     @Param('postId') id: string,
-    @Body('likeStatus') likeStatus: string,
+    @Body() lsDto: LikeStatusDto,
     @User() user,
   ) {
     const post = await this.postQueryRepo.findPostById(id);
     if (!post) throw new NotFoundException();
 
-    await this.postService.makeLike(id, user, likeStatus);
+    await this.postService.makeLike(id, user, lsDto.likeStatus);
   }
 
   @Get(':postId/comments')

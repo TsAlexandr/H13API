@@ -16,6 +16,7 @@ import { CommentsQueryRepository } from '../infrastucture/comments-query.reposit
 import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
 import { User } from '../../../common/decorators/user.decorator';
 import { UpdateCommentDto } from '../dto/updateComment.dto';
+import { LikeStatusDto } from '../dto/likeStatus.dto';
 
 @Controller('comments')
 export class CommentsController {
@@ -30,7 +31,7 @@ export class CommentsController {
   async makeLike(
     @Param('commentId') id: string,
     @User() user,
-    @Body('likeStatus') likeStatus: string,
+    @Body() lsDto: LikeStatusDto,
   ) {
     const comment = await this.commentQueryRepo.getCommentById(
       id /*, user.id*/,
@@ -38,7 +39,11 @@ export class CommentsController {
     if (!comment) {
       throw new NotFoundException();
     }
-    const result = await this.commentsService.makeLike(id, user, likeStatus);
+    const result = await this.commentsService.makeLike(
+      id,
+      user,
+      lsDto.likeStatus,
+    );
   }
 
   @Get(':id')

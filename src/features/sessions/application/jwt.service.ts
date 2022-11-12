@@ -15,12 +15,12 @@ export class JwtService {
   }
   async generateTokens(userId: any, deviceId: string) {
     const token = jwt.sign({ userId: userId }, this.secret, {
-      expiresIn: '4m',
+      expiresIn: '10s',
     });
     const refreshToken = jwt.sign(
       { deviceId: deviceId, userId: userId },
       this.refreshSecret,
-      { expiresIn: '5m' },
+      { expiresIn: '20s' },
     );
 
     return {

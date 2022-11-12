@@ -103,6 +103,9 @@ export class CommentsQueryRepository {
     });
 
     console.log(temp);
+    if (!temp.length) {
+      return null;
+    }
     return temp[0][0];
   }
 

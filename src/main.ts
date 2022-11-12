@@ -2,10 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './exception.filter';
+import { useContainer } from 'class-validator';
 async function bootstrap() {
   console.log(process.env.PORT);
   const app = await NestFactory.create(AppModule);
 
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

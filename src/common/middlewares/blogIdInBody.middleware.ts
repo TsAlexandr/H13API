@@ -1,4 +1,9 @@
-import { Injectable, NestMiddleware, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NestMiddleware,
+  NotFoundException,
+} from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { BlogQueryRepository } from '../../features/blogs/infrastructure/blog-query.repository';
 
@@ -12,8 +17,8 @@ export class CheckExistingBlogForPostMiddleware implements NestMiddleware {
     console.log(blog);
     if (!blog) {
       console.log('Throw exception');
-      throw new NotFoundException([
-        { message: 'Blog not exists', field: 'blodId' },
+      throw new BadRequestException([
+        { message: 'Blog not exists', field: 'blogId' },
       ]);
     }
     next();

@@ -16,6 +16,7 @@ import { BlogQueryRepository } from './features/blogs/infrastructure/blog-query.
 import { Blog, BlogSchema } from './features/blogs/entities/blogs.schema';
 import { JwtService } from './features/sessions/application/jwt.service';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { BlogIdValidation } from './common/validators/BlogIdValidation';
 
 mongoose.set('toJSON', {
   virtuals: true,
@@ -45,6 +46,6 @@ mongoose.set('toJSON', {
     SessionsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, BlogQueryRepository, JwtService],
+  providers: [AppService, BlogQueryRepository, JwtService, BlogIdValidation],
 })
 export class AppModule {}

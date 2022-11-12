@@ -15,6 +15,7 @@ import { BlogQueryRepository } from '../blogs/infrastructure/blog-query.reposito
 import { Blog, BlogSchema } from '../blogs/entities/blogs.schema';
 import { JwtService } from '../sessions/application/jwt.service';
 import { UsersModule } from '../users/users.module';
+import { BlogIdValidation } from '../../common/validators/BlogIdValidation';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Post.name, schema: PostSchema }]),
@@ -29,13 +30,14 @@ import { UsersModule } from '../users/users.module';
     PostsRepository,
     BlogQueryRepository,
     JwtService,
+    BlogIdValidation,
   ],
   exports: [PostsService, PostsQueryRepository, PostsRepository],
 })
 export class PostsModule {
-  configure(consumer: MiddlewareConsumer) {
-    /*consumer
+  /*configure(consumer: MiddlewareConsumer) {
+    consumer
       .apply(CheckExistingBlogForPostMiddleware)
-      .forRoutes({ path: 'posts', method: RequestMethod.POST });*/
-  }
+      .forRoutes({ path: 'posts', method: RequestMethod.POST });
+  }*/
 }

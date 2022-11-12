@@ -10,7 +10,7 @@ export class CommentsQueryRepository {
   ) {}
 
   async getCommentById(id: string) {
-    return this.commentModel.findById(id);
+    return this.commentModel.findOne({ _id: id, isBanned: false });
   }
 
   async getCommentByIdWithLikes(
@@ -18,7 +18,7 @@ export class CommentsQueryRepository {
     userId: string | mongoose.Types.ObjectId,
   ) {
     const comment = await this.commentModel.aggregate([
-      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+      { $match: { _id: new mongoose.Types.ObjectId(id), isBanned: false } },
       {
         $lookup: {
           from: 'likes',
@@ -113,7 +113,7 @@ export class CommentsQueryRepository {
     const { pageNumber, pageSize, sortBy, sortDirection } = query;
     const comments = await this.commentModel
       .aggregate([
-        { $match: { postId: postId } },
+        { $match: { postId: postId, isBanned: false } },
         {
           $lookup: {
             from: 'likes',
@@ -204,6 +204,7 @@ export class CommentsQueryRepository {
 
     const totalCount = await this.commentModel.countDocuments({
       postId: new mongoose.Types.ObjectId(postId),
+      isBanned: false,
     });
 
     return {

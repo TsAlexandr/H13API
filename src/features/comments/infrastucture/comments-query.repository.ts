@@ -102,7 +102,8 @@ export class CommentsQueryRepository {
       return comment;
     });
 
-    return temp[0];
+    console.log(temp);
+    return temp[0][0];
   }
 
   async getCommentsByPostId(

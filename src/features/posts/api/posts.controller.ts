@@ -63,6 +63,9 @@ export class PostsController {
     @Query() query: PostQueryDto,
     @Req() req: Request,
   ) {
+    const post = await this.postQueryRepo.getPostById(postId);
+    if (!post) throw new NotFoundException();
+
     let currentUserId = new mongoose.Types.ObjectId();
     if (req.headers.authorization) {
       const token = req.headers.authorization.split(' ')[1];

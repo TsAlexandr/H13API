@@ -26,8 +26,8 @@ export class LikesRepository {
     status: string;
   }) {
     const existedLike = await this.likesModel.findOne({
-      commentId: like.commentId,
-      userId: like.userId,
+      commentId: new mongoose.Types.ObjectId(like.commentId),
+      userId: new mongoose.Types.ObjectId(like.userId),
     });
     if (!existedLike) {
       return false;

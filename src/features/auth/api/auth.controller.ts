@@ -100,17 +100,22 @@ export class AuthController {
     /*@RefreshToken() refreshToken: string,*/ @Req() req: Request,
     @Res() res: Response,
   ) {
-    console.log(req.cookies);
-    if (!req.cookies) {
+    console.log('CHECK REFRESH');
+    console.log(req.cookies.refreshToken);
+
+    if (!req.cookies.refreshToken) {
       throw new UnauthorizedException();
     }
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
+      throw new UnauthorizedException();
     }
     const tokens = await this.sessionService.updateSession(refreshToken);
     if (!tokens) {
       throw new UnauthorizedException();
     }
+
+    console.log(tokens);
     res.cookie('refreshToken', tokens.refreshToken, {
       expires: dayjs().add(20, 'seconds').toDate(),
       secure: true,

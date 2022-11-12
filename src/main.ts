@@ -3,11 +3,13 @@ import { AppModule } from './app.module';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './exception.filter';
 import { useContainer } from 'class-validator';
+import cookieParser from 'cookie-parser';
 async function bootstrap() {
   console.log(process.env.PORT);
   const app = await NestFactory.create(AppModule);
-
+  app.use(cookieParser());
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

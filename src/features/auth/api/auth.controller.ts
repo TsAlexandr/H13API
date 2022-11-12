@@ -170,10 +170,18 @@ export class AuthController {
   @UseGuards(BearerAuthGuard)
   @Get('me')
   async getInfoAboutMe(@User() user: any) {
-    /*if(user){
-      delete Object.assign(user, {["userId"]: user["id"] })["id"]
-    }*/
+    const findedUser = await this.userQueryRepo.findById(user.id);
+    if (findedUser) {
+      delete Object.assign(user, { ['userId']: user['id'] })['id'];
+      delete findedUser.passwordHash;
+      delete findedUser.passwordSalt;
+      delete findedUser.emailConfirmation;
+      delete findedUser.banInfo;
+      delete findedUser.createdAt;
+    }
 
-    return await this.userQueryRepo.findById(user.id);
+    console.log(findedUser);
+
+    return findedUser;
   }
 }

@@ -20,7 +20,7 @@ export class JwtService {
     const refreshToken = jwt.sign(
       { deviceId: deviceId, userId: userId },
       this.refreshSecret,
-      { expiresIn: '20s' },
+      { expiresIn: '20m' },
     );
 
     return {

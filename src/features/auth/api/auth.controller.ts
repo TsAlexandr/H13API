@@ -7,6 +7,7 @@ import {
   HttpCode,
   Ip,
   Post,
+  Req,
   Res,
   UnauthorizedException,
   UseGuards,
@@ -16,7 +17,7 @@ import { SessionsService } from '../../sessions/application/sessions.service';
 import { AuthService } from '../application/auth.service';
 import { JwtService } from '../../sessions/application/jwt.service';
 import { UsersService } from '../../users/application/users.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { LoginDto } from '../dto/login.dto';
 import { NewPasswordDto } from '../dto/newPassword.dto';
 import { RefreshToken } from '../../../common/decorators/cookies.decorator';
@@ -85,7 +86,7 @@ export class AuthController {
     }
     res.cookie('refreshToken', session.refreshToken, {
       secure: true,
-      expires: dayjs().add(20, 'seconds').toDate(),
+      expires: dayjs().add(20, 'minutes').toDate(),
       httpOnly: true,
     });
 
@@ -93,9 +94,16 @@ export class AuthController {
   }
 
   @Post('refresh-token')
-  async refresh(@RefreshToken() refreshToken: string, @Res() res: Response) {
-    if (!refreshToken) {
+  async refresh(
+    /*@RefreshToken() refreshToken: string,*/ @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    console.log(req.cookies);
+    if (!req.cookies.refreshToken) {
       throw new UnauthorizedException();
+    }
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) {
     }
     const tokens = await this.sessionService.updateSession(refreshToken);
     if (!tokens) {

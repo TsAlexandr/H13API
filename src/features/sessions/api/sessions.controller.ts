@@ -88,6 +88,8 @@ export class SessionsController {
       payload.userId,
       id,
     );
+
+    console.log(isDeleted);
     return isDeleted;
   }
 }

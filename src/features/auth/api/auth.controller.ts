@@ -90,8 +90,6 @@ export class AuthController {
       httpOnly: true,
     });
 
-    console.log(res);
-
     return { accessToken: session.accessToken };
   }
 
@@ -103,7 +101,7 @@ export class AuthController {
     console.log('CHECK REFRESH');
     console.log(req.cookies.refreshToken);
 
-    if (!req.cookies.refreshToken) {
+    if (!req.cookies) {
       throw new UnauthorizedException();
     }
     const refreshToken = req.cookies.refreshToken;

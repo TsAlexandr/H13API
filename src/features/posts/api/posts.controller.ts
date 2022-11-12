@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -126,6 +127,11 @@ export class PostsController {
   @Put(':id')
   @HttpCode(204)
   async updatePost(@Param('id') id: string, @Body() cpDto: CreatePostDto) {
+    const blog = await this.blogQueryRepo.findBlogById(cpDto.blogId);
+    if (!blog)
+      throw new BadRequestException([
+        { message: "Blod doesn't exist", field: 'blogId' },
+      ]);
     const isUpdated = await this.postService.updatePost(id, cpDto);
     if (!isUpdated) throw new NotFoundException();
 

@@ -59,7 +59,7 @@ export class LikesRepository {
     status: string;
   }) {
     const existedLike = await this.likesModel.findOne({
-      postId: like.postId.toString(),
+      postId: like.postId,
       userId: like.userId,
     });
     if (!existedLike) {

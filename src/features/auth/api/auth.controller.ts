@@ -24,6 +24,7 @@ import { CreateUserDto } from '../../users/dto/create-user.dto';
 import { User } from '../../../common/decorators/user.decorator';
 import { UserQueryRepository } from '../../users/infrastructure/user-query.repository';
 import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
@@ -35,6 +36,7 @@ export class AuthController {
     private userQueryRepo: UserQueryRepository,
   ) {}
 
+  @UseGuards(ThrottlerGuard)
   @Post('password-recovery')
   @HttpCode(204)
   async passwordRecovery(@Body('email') email: string) {
@@ -42,6 +44,7 @@ export class AuthController {
     return true;
   }
 
+  @UseGuards(ThrottlerGuard)
   @Post('new-password')
   async changePassword(@Body() npDto: NewPasswordDto) {
     console.log(npDto.newPassword, ' NEW PASSWORD ', npDto.recoveryCode);
@@ -58,6 +61,7 @@ export class AuthController {
     return true;
   }
 
+  @UseGuards(ThrottlerGuard)
   @Post('login')
   @HttpCode(200)
   async login(
@@ -107,6 +111,7 @@ export class AuthController {
     };
   }
 
+  @UseGuards(ThrottlerGuard)
   @Post('registration-confirmation')
   @HttpCode(204)
   async confirmRegistration(@Body('code') code: string) {
@@ -120,6 +125,7 @@ export class AuthController {
     return result;
   }
 
+  @UseGuards(ThrottlerGuard)
   @Post('registration')
   @HttpCode(204)
   async registration(@Body() newUser: CreateUserDto) {
@@ -130,6 +136,7 @@ export class AuthController {
     }
   }
 
+  @UseGuards(ThrottlerGuard)
   @Post('registration-email-resending')
   @HttpCode(204)
   async resendEmailConfirmation(@Body('email') email: string) {

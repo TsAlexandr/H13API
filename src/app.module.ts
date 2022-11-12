@@ -30,10 +30,10 @@ mongoose.set('toJSON', {
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    /*ThrottlerModule.forRoot({
+    ThrottlerModule.forRoot({
       ttl: 10,
       limit: 5,
-    }),*/
+    }),
     MongooseModule.forRoot(process.env.mongoURI),
     MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema }]),
     BlogsModule,

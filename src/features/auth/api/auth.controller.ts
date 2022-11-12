@@ -90,6 +90,8 @@ export class AuthController {
       httpOnly: true,
     });
 
+    console.log(res);
+
     return { accessToken: session.accessToken };
   }
 

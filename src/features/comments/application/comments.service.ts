@@ -18,8 +18,8 @@ export class CommentsService {
     const newComment = {
       content: content,
       postId: postId,
-      userId: user.id,
-      userLogin: user.is,
+      userId: user._id,
+      userLogin: user.login,
       createdAt: new Date().toISOString(),
       isBanned: user.banInfo.isBanned,
     };
@@ -27,7 +27,12 @@ export class CommentsService {
     console.log();
 
     const createdComment = await this.commentRepo.createComment(newComment);
-    return createdComment;
+    return {
+      content: createdComment.content,
+      userId: user._id,
+      userLogin: user.login,
+      createdAt: new Date().toISOString(),
+    };
   }
   async deleteComment(id: string) {
     return await this.commentRepo.deleteComment(id);

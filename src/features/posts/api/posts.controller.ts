@@ -97,16 +97,22 @@ export class PostsController {
     @Body() ucDto: UpdateCommentDto,
     //TODO: изменить тип переменной
     @User() user: any,
+    @Req() req: Request,
   ) {
     const post = await this.postQueryRepo.getPostById(postId);
     console.log(post);
     console.log(user);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    console.log(req.user);
     if (!post) throw new NotFoundException();
 
     const comment = await this.commentService.createComment(
       ucDto.content,
       postId,
-      user,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      req.user,
     );
 
     return comment;

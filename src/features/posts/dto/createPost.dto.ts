@@ -1,5 +1,6 @@
 import { IsNotEmpty, Length } from 'class-validator';
 import { Transform } from 'class-transformer';
+import { Trim } from 'class-sanitizer';
 
 export class CreatePostDto {
   @IsNotEmpty()

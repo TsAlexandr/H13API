@@ -72,15 +72,15 @@ export class LikesRepository {
 
   async getLikeByCommentIdAndUserId(commentId: string, userId: string) {
     return this.likesModel.findOne({
-      commentId: commentId,
-      userId: userId,
+      commentId: new mongoose.Types.ObjectId(commentId),
+      userId: new mongoose.Types.ObjectId(userId),
     });
   }
 
   async getLikeByPostIdAndUserId(postId: string, userId: string) {
     return this.likesModel.findOne({
-      postId: postId,
-      userId: userId,
+      postId: new mongoose.Types.ObjectId(postId),
+      userId: new mongoose.Types.ObjectId(userId),
     });
   }
 

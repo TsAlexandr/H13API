@@ -51,6 +51,7 @@ export class PostsService {
       postId,
       user.id,
     );
+    console.log(existedLike);
     const likeInfo: {
       postId: mongoose.Types.ObjectId;
       userId: mongoose.Types.ObjectId;

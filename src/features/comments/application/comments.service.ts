@@ -18,22 +18,17 @@ export class CommentsService {
     const newComment = {
       content: content,
       postId: postId,
-      userId: user._id,
+      userId: user.id,
       userLogin: user.login,
       createdAt: new Date().toISOString(),
       isBanned: user.banInfo.isBanned,
     };
 
-    console.log();
-
     const createdComment = await this.commentRepo.createComment(newComment);
-    return {
-      content: createdComment.content,
-      userId: user.id,
-      userLogin: user.login,
-      createdAt: new Date().toISOString(),
-      likesInfo: createdComment.likesInfo,
-    };
+    delete createdComment.postId;
+    delete createdComment.isBanned;
+    console.log(createdComment);
+    return createdComment;
   }
   async deleteComment(id: string) {
     return await this.commentRepo.deleteComment(id);

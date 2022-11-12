@@ -10,12 +10,13 @@ export class PostsQueryRepository {
   constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
   async findAllPosts(
-    userId: string | null,
+    userId: mongoose.Types.ObjectId | null,
     pageNumber: number,
     pageSize: number,
     sortBy: string,
     sortDirection: any,
   ) {
+    console.log(userId);
     const posts = await this.postModel
       .aggregate([
         {
@@ -63,7 +64,7 @@ export class PostsQueryRepository {
             foreignField: 'postId',
             pipeline: [
               {
-                $match: { userId: new mongoose.Types.ObjectId() },
+                $match: { userId: new mongoose.Types.ObjectId(userId) },
               },
               {
                 $project: { _id: 0, status: 1 },
@@ -136,8 +137,7 @@ export class PostsQueryRepository {
       const extendedLikesInfo = {
         likesCount: likesCountArr.length ? likesCountArr[0].count : 0,
         dislikesCount: dislikesCountArr.length ? dislikesCountArr[0].count : 0,
-        myStatus:
-          'None' /*myStatusArr.length ? myStatusArr[0].status : 'None',*/,
+        myStatus: myStatusArr.length ? myStatusArr[0].status : 'None',
         newestLikes: post.extendedLikesInfo.newestLikes,
       };
       post.extendedLikesInfo = extendedLikesInfo;
@@ -159,14 +159,12 @@ export class PostsQueryRepository {
     const post = await this.postModel.findOne({ _id: id });
     return post;
   }
-  async findPostById(id: string | null) {
+  async findPostById(id: string | null, currentUserId: any) {
     if (!id) {
       return null;
     }
 
-    /*const post = await this.postModel.findById(id);
-    return post;*/
-
+    console.log(currentUserId);
     const post = await this.postModel.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(id) } },
       {
@@ -214,7 +212,7 @@ export class PostsQueryRepository {
           foreignField: 'postId',
           pipeline: [
             {
-              $match: { userId: new mongoose.Types.ObjectId() },
+              $match: { userId: new mongoose.Types.ObjectId(currentUserId) },
             },
             {
               $project: { _id: 0, status: 1 },

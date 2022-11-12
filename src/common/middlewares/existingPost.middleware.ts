@@ -7,7 +7,7 @@ export class CheckExistingPostMiddleware implements NestMiddleware {
   constructor(private postQueryRepo: PostsQueryRepository) {}
   async use(req: Request, res: Response, next: NextFunction) {
     console.log('Middleware -->', req.params.id);
-    const blog = await this.postQueryRepo.findPostById(req.params.id);
+    const blog = await this.postQueryRepo.getPostById(req.params.id);
     console.log(blog);
     if (!blog) {
       console.log('Throw exception');

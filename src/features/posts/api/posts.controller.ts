@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { PostsService } from '../application/posts.service';
@@ -24,6 +25,11 @@ import { CommentsService } from '../../comments/application/comments.service';
 import { User } from '../../../common/decorators/user.decorator';
 import { UpdateCommentDto } from '../../comments/dto/updateComment.dto';
 import { LikeStatusDto } from '../../comments/dto/likeStatus.dto';
+import { Request } from 'express';
+import * as mongoose from 'mongoose';
+import { JwtService } from '../../sessions/application/jwt.service';
+import { UsersService } from '../../users/application/users.service';
+import { UserQueryRepository } from '../../users/infrastructure/user-query.repository';
 
 @Controller('posts')
 export class PostsController {
@@ -33,6 +39,8 @@ export class PostsController {
     private commentsQueryRepo: CommentsQueryRepository,
     private commentService: CommentsService,
     private blogQueryRepo: BlogQueryRepository,
+    private jwtService: JwtService,
+    private userQueryRepo: UserQueryRepository,
   ) {}
 
   @UseGuards(BearerAuthGuard)
@@ -43,7 +51,7 @@ export class PostsController {
     @Body() lsDto: LikeStatusDto,
     @User() user,
   ) {
-    const post = await this.postQueryRepo.findPostById(id);
+    const post = await this.postQueryRepo.getPostById(id);
     if (!post) throw new NotFoundException();
 
     await this.postService.makeLike(id, user, lsDto.likeStatus);
@@ -53,9 +61,24 @@ export class PostsController {
   async getCommentByPostId(
     @Param('postId') postId: string,
     @Query() query: PostQueryDto,
+    @Req() req: Request,
   ) {
+    let currentUserId = new mongoose.Types.ObjectId();
+    if (req.headers.authorization) {
+      const token = req.headers.authorization.split(' ')[1];
+      console.log(token);
+      const userId = await this.jwtService.getUserByAccessToken(token);
+      console.log('UserId = ' + userId);
+
+      if (userId) {
+        const user = await this.userQueryRepo.findById(userId.toString());
+        if (user) {
+          currentUserId = user.id;
+        }
+      }
+    }
     const comments = await this.commentsQueryRepo.getCommentsByPostId(
-      '',
+      currentUserId,
       postId,
       query,
     );
@@ -87,8 +110,22 @@ export class PostsController {
   }
 
   @Get()
-  async getAllPosts(@Query() pqDto: PostQueryDto) {
-    const currentUserId = '';
+  async getAllPosts(@Query() pqDto: PostQueryDto, @Req() req: Request) {
+    let currentUserId = new mongoose.Types.ObjectId();
+    if (req.headers.authorization) {
+      const token = req.headers.authorization.split(' ')[1];
+      console.log(token);
+      const userId = await this.jwtService.getUserByAccessToken(token);
+      console.log('UserId = ' + userId);
+
+      if (userId) {
+        const user = await this.userQueryRepo.findById(userId.toString());
+        if (user) {
+          currentUserId = user.id;
+        }
+      }
+    }
+
     const data = await this.postQueryRepo.findAllPosts(
       currentUserId,
       pqDto.pageNumber,
@@ -117,8 +154,23 @@ export class PostsController {
   }
 
   @Get(':id')
-  async getPostById(@Param('id') id: string) {
-    const post = await this.postQueryRepo.findPostById(id);
+  async getPostById(@Param('id') id: string, @Req() req: Request) {
+    let currentUserId = new mongoose.Types.ObjectId();
+    if (req.headers.authorization) {
+      const token = req.headers.authorization.split(' ')[1];
+      console.log(token);
+      const userId = await this.jwtService.getUserByAccessToken(token);
+      console.log('UserId = ' + userId);
+
+      if (userId) {
+        const user = await this.userQueryRepo.findById(userId.toString());
+        if (user) {
+          currentUserId = user.id;
+        }
+      }
+    }
+
+    const post = await this.postQueryRepo.findPostById(id, currentUserId);
     if (!post) throw new NotFoundException();
     return post;
   }

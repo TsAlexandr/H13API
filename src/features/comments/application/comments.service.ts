@@ -42,8 +42,6 @@ export class CommentsService {
 
   async makeLike(commentId: string, user: any, status: string) {
     const commentIdDb = commentId;
-    console.log('USERID');
-    console.log(user);
     const existedLike = await this.likesRepo.getLikeByCommentIdAndUserId(
       commentId,
       user.id,

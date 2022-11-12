@@ -13,7 +13,10 @@ export class CommentsQueryRepository {
     return this.commentModel.findById(id);
   }
 
-  async getCommentByIdWithLikes(id: string) {
+  async getCommentByIdWithLikes(
+    id: string,
+    userId: string | mongoose.Types.ObjectId,
+  ) {
     const comment = await this.commentModel.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(id) } },
       {
@@ -61,7 +64,7 @@ export class CommentsQueryRepository {
           foreignField: 'commentId',
           pipeline: [
             {
-              $match: { userId: new mongoose.Types.ObjectId() },
+              $match: { userId: new mongoose.Types.ObjectId(userId) },
             },
             {
               $project: { _id: 0, status: 1 },
@@ -103,7 +106,7 @@ export class CommentsQueryRepository {
   }
 
   async getCommentsByPostId(
-    userId: string,
+    userId: string | mongoose.Types.ObjectId,
     postId: string,
     query: PostQueryDto,
   ) {
@@ -156,7 +159,7 @@ export class CommentsQueryRepository {
             foreignField: 'commentId',
             pipeline: [
               {
-                $match: { userId: new mongoose.Types.ObjectId() },
+                $match: { userId: new mongoose.Types.ObjectId(userId) },
               },
               {
                 $project: { _id: 0, status: 1 },

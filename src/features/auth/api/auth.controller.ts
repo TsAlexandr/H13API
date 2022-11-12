@@ -98,9 +98,6 @@ export class AuthController {
     /*@RefreshToken() refreshToken: string,*/ @Req() req: Request,
     @Res() res: Response,
   ) {
-    console.log('CHECK REFRESH');
-    console.log(req.cookies.refreshToken);
-
     if (!req.cookies) {
       throw new UnauthorizedException();
     }

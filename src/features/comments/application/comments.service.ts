@@ -29,9 +29,10 @@ export class CommentsService {
     const createdComment = await this.commentRepo.createComment(newComment);
     return {
       content: createdComment.content,
-      userId: user._id,
+      userId: user.id,
       userLogin: user.login,
       createdAt: new Date().toISOString(),
+      likesInfo: createdComment.likesInfo,
     };
   }
   async deleteComment(id: string) {

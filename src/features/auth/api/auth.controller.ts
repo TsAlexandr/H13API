@@ -101,7 +101,7 @@ export class AuthController {
     @Res() res: Response,
   ) {
     console.log(req.cookies);
-    if (!req.cookies.refreshToken) {
+    if (!req.cookies) {
       throw new UnauthorizedException();
     }
     const refreshToken = req.cookies.refreshToken;

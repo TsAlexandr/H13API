@@ -26,6 +26,7 @@ import { User } from '../../../common/decorators/user.decorator';
 import { UserQueryRepository } from '../../users/infrastructure/user-query.repository';
 import { BearerAuthGuard } from '../../../common/guards/bearerAuth.guard';
 import { ThrottlerGuard } from '@nestjs/throttler';
+import { CodeDto } from '../dto/code.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -129,8 +130,8 @@ export class AuthController {
   @UseGuards(ThrottlerGuard)
   @Post('registration-confirmation')
   @HttpCode(204)
-  async confirmRegistration(@Body('code') code: string) {
-    const result = await this.authService.confirmEmail(code);
+  async confirmRegistration(@Body() cDto: CodeDto) {
+    const result = await this.authService.confirmEmail(cDto.code);
 
     console.log(result);
     if (!result)

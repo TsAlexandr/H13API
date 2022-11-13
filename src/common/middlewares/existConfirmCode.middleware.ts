@@ -21,6 +21,8 @@ export class CheckExistingConfirmCodeMiddleware implements NestMiddleware {
         },
       ]);
     }
+
+    console.log(user);
     const expiredDate = new Date(user.emailConfirmation.expiredDate);
     const isConfirmed = user.emailConfirmation.isConfirmed;
     if (isConfirmed) {

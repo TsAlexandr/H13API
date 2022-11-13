@@ -7,19 +7,16 @@ import { EmailModule } from '../../emailManager/emailModule';
 import { SessionsModule } from '../sessions/sessions.module';
 import { CheckExistingConfirmCodeMiddleware } from '../../common/middlewares/existConfirmCode.middleware';
 import { CheckExistingUserMiddleware } from '../../common/middlewares/existUser.middleware';
+import { ConfirmCodeValidator } from '../../common/validators/confirmCode.validator';
 
 @Module({
   imports: [ConfigModule, UsersModule, EmailModule, SessionsModule],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, ConfirmCodeValidator],
   exports: [AuthService],
 })
 export class AuthModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CheckExistingConfirmCodeMiddleware).forRoutes({
-      path: 'auth/registration-confirmation',
-      method: RequestMethod.POST,
-    });
     consumer.apply(CheckExistingUserMiddleware).forRoutes({
       path: 'auth/registration',
       method: RequestMethod.POST,

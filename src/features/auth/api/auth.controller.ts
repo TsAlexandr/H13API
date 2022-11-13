@@ -205,6 +205,10 @@ export class AuthController {
 
     console.log(findedUser);
 
-    return findedUser;
+    return {
+      login: findedUser.login,
+      email: findedUser.email,
+      userId: findedUser.id,
+    };
   }
 }

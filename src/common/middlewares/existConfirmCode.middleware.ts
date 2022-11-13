@@ -23,7 +23,7 @@ export class CheckExistingConfirmCodeMiddleware implements NestMiddleware {
     }
     const expiredDate = new Date(user.emailConfirmation.expiredDate);
     const isConfirmed = user.emailConfirmation.isConfirmed;
-    if (expiredDate < new Date() || isConfirmed) {
+    if (isConfirmed) {
       console.log('Throw exception');
       throw new BadRequestException([
         {

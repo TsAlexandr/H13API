@@ -179,7 +179,14 @@ export class AuthController {
       throw new UnauthorizedException();
     }
 
+    const session = await this.sessionService.getSessionByDeviceIdUserId(
+      payload,
+    );
     console.log(payload);
+    console.log(session);
+    if (!session) {
+      throw new UnauthorizedException();
+    }
     await this.sessionService.removeSessionByDeviceId(
       payload.userId,
       payload.deviceId,

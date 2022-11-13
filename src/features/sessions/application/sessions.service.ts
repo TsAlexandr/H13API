@@ -104,4 +104,14 @@ export class SessionsService {
   async getSessionByDeviceId(deviceId: string) {
     return await this.sessionDbRepo.getSessionByDeviceId(deviceId);
   }
+
+  async getSessionByDeviceIdUserId(payload: any) {
+    const session = await this.sessionDbRepo.getSessionByUserByDeviceAndByDate(
+      payload.userId,
+      payload.deviceId,
+      new Date(payload.iat * 1000),
+    );
+
+    return session;
+  }
 }

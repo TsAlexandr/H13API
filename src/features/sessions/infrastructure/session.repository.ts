@@ -40,9 +40,11 @@ export class SessionRepository {
     deviceId: string,
     issuedAt: Date,
   ) {
-    const sessions = await this.sessionModel
-      .find({ userId: userId, deviceId: deviceId, lastActiveDate: issuedAt })
-      .lean();
+    const sessions = await this.sessionModel.find({
+      userId: userId,
+      deviceId: deviceId,
+      lastActiveDate: issuedAt,
+    });
     return sessions;
   }
 
@@ -52,6 +54,10 @@ export class SessionRepository {
     expiredDate: Date,
     issuedAt: Date,
   ) {
+    console.log(expiredDate);
+    console.log(issuedAt);
+    console.log(userId);
+    console.log(deviceId);
     const result = await this.sessionModel.updateOne(
       { userId: userId, deviceId: deviceId },
       { $set: { expiredDate: expiredDate, lastActiveDate: issuedAt } },

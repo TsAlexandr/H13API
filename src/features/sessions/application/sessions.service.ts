@@ -48,6 +48,7 @@ export class SessionsService {
     const payload = await this.jwtService.getPayloadByRefreshToken(
       refreshToken,
     );
+
     console.log('UPDATE SESSION PAYLOAD');
     if (!payload) {
       return null;
@@ -72,10 +73,11 @@ export class SessionsService {
     if (!newPayload) {
       console.log('null');
     }
+    console.log(newPayload);
     await this.sessionDbRepo.updateSession(
       newPayload.userId,
       newPayload.deviceId,
-      new Date(newPayload.expiredDate * 1000),
+      new Date(newPayload.exp * 1000),
       new Date(newPayload.iat * 1000),
     );
     return {

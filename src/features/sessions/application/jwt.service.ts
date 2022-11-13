@@ -14,13 +14,17 @@ export class JwtService {
       'test_refresh_secret';
   }
   async generateTokens(userId: any, deviceId: string) {
-    const token = jwt.sign({ userId: userId }, this.secret, {
-      expiresIn: '10s',
-    });
+    const token = jwt.sign(
+      { userId: userId },
+      process.env.JWT_SECRET /*this.secret*/,
+      {
+        expiresIn: '10h',
+      },
+    );
     const refreshToken = jwt.sign(
       { deviceId: deviceId, userId: userId },
-      this.refreshSecret,
-      { expiresIn: '20s' },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: '20h' },
     );
 
     return {
@@ -30,7 +34,7 @@ export class JwtService {
   }
   async getUserByAccessToken(token: string) {
     try {
-      const result: any = jwt.verify(token, process.env.JWT_SECRET);
+      const result: any = jwt.verify(token, this.secret);
       console.log(result.userId);
       return result.userId;
     } catch (e) {
@@ -40,10 +44,8 @@ export class JwtService {
   }
   async getPayloadByRefreshToken(refreshToken: string): Promise<any> {
     try {
-      const result: any = jwt.verify(
-        refreshToken,
-        process.env.JWT_REFRESH_SECRET,
-      );
+      const result: any = jwt.verify(refreshToken, this.refreshSecret);
+      console.log(result);
       return result;
     } catch (e) {
       console.log('Fall');
@@ -53,10 +55,7 @@ export class JwtService {
   }
   async getUserByRefreshToken(refreshToken: string) {
     try {
-      const result: any = jwt.verify(
-        refreshToken,
-        process.env.JWT_REFRESH_SECRET,
-      );
+      const result: any = jwt.verify(refreshToken, this.refreshSecret);
       return result.userId;
     } catch (e) {
       return null;

@@ -84,6 +84,7 @@ export class AuthController {
     if (!session) {
       throw new UnauthorizedException();
     }
+
     res.cookie('refreshToken', session.refreshToken, {
       secure: true,
       expires: dayjs().add(20, 'minutes').toDate(),
@@ -95,8 +96,9 @@ export class AuthController {
 
   @Post('refresh-token')
   async refresh(
-    /*@RefreshToken() refreshToken: string,*/ @Req() req: Request,
-    @Res() res: Response,
+    //@RefreshToken() refreshToken1: string,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
   ) {
     if (!req.cookies) {
       throw new UnauthorizedException();
@@ -105,14 +107,16 @@ export class AuthController {
     if (!refreshToken) {
       throw new UnauthorizedException();
     }
+
+    console.log('REFRESH');
+    console.log(refreshToken);
     const tokens = await this.sessionService.updateSession(refreshToken);
     if (!tokens) {
       throw new UnauthorizedException();
     }
-
-    console.log(tokens);
+    console.log('TOKENS   ', tokens);
     res.cookie('refreshToken', tokens.refreshToken, {
-      expires: dayjs().add(20, 'seconds').toDate(),
+      expires: dayjs().add(20, 's').toDate(),
       secure: true,
       httpOnly: true,
     });
@@ -159,7 +163,10 @@ export class AuthController {
 
   @Post('logout')
   @HttpCode(204)
-  async logout(@RefreshToken() refreshToken, @Res() res: Response) {
+  async logout(
+    @RefreshToken() refreshToken,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     if (!refreshToken) {
       throw new UnauthorizedException();
     }

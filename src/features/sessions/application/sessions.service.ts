@@ -50,6 +50,7 @@ export class SessionsService {
     );
 
     console.log('UPDATE SESSION PAYLOAD');
+    console.log(payload);
     if (!payload) {
       return null;
     }

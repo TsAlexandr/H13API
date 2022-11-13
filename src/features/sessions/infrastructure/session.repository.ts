@@ -68,7 +68,7 @@ export class SessionRepository {
     const sessions = await this.sessionModel
       .find(
         { userId: userId },
-        { _id: 0, id: '$_id', ip: 1, title: 1, lastActiveDate: 1, deviceId: 1 },
+        { _id: 0, ip: 1, title: 1, lastActiveDate: 1, deviceId: 1 },
       )
       .lean();
 

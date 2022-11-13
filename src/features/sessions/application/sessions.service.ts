@@ -97,7 +97,8 @@ export class SessionsService {
   }
 
   async getSessionsByUserId(userId: string) {
-    return await this.sessionDbRepo.getSessionsByUserId(userId);
+    const session = await this.sessionDbRepo.getSessionsByUserId(userId);
+    return session;
   }
   async getSessionByDeviceId(deviceId: string) {
     return await this.sessionDbRepo.getSessionByDeviceId(deviceId);

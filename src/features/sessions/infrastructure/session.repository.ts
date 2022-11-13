@@ -65,7 +65,14 @@ export class SessionRepository {
     return result.matchedCount === 1;
   }
   async getSessionsByUserId(userId: string) {
-    const sessions = await this.sessionModel.find({ userId: userId }).lean();
+    const sessions = await this.sessionModel
+      .find(
+        { userId: userId },
+        { _id: 0, id: '$_id', ip: 1, title: 1, lastActivate: 1, deviceId: 1 },
+      )
+      .lean();
+
+    console.log(sessions);
     return sessions;
   }
   async removeSessionByDeviceId(userId: string, deviceId: string) {

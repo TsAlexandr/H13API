@@ -40,7 +40,7 @@ export class SessionRepository {
     deviceId: string,
     issuedAt: Date,
   ) {
-    const sessions = await this.sessionModel.find({
+    const sessions = await this.sessionModel.findOne({
       userId: userId,
       deviceId: deviceId,
       lastActiveDate: issuedAt,

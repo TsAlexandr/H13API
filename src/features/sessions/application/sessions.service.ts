@@ -58,6 +58,9 @@ export class SessionsService {
       payload.deviceId,
       new Date(payload.iat * 1000),
     );
+
+    console.log('Session');
+    console.log(session);
     if (!session) {
       return null;
     }

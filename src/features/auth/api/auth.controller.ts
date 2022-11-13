@@ -178,9 +178,14 @@ export class AuthController {
       throw new UnauthorizedException();
     }
 
+    console.log(payload);
     await this.sessionService.removeSessionByDeviceId(
       payload.userId,
       payload.deviceId,
+    );
+
+    console.log(
+      await this.sessionService.getSessionByDeviceId(payload.deviceId),
     );
     res.clearCookie('refreshToken');
   }

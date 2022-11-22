@@ -104,7 +104,8 @@ export class BlogsController {
     const isUpdated = await this.blogsService.updateBlog(
       id,
       cbDto.name,
-      cbDto.youtubeUrl,
+      cbDto.websiteUrl,
+        cbDto.description
     );
     if (!isUpdated) throw new NotFoundException();
     return true;

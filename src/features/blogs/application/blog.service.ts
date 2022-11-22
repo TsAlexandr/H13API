@@ -9,7 +9,8 @@ export class BlogService {
   async createBlog(cbDto: CreateBlogDto) {
     const blog = {
       name: cbDto.name,
-      youtubeUrl: cbDto.youtubeUrl,
+      websiteUrl: cbDto.websiteUrl,
+      description: cbDto.description,
       createdAt: new Date().toISOString(),
     };
 
@@ -21,8 +22,8 @@ export class BlogService {
     return await this.blogsRepo.deleteBlog(id);
   }
 
-  async updateBlog(id: string, name: string, youtubeUrl: string) {
-    return await this.blogsRepo.updateBlog(id, name, youtubeUrl);
+  async updateBlog(id: string, name: string, websiteUrl: string, description: string) {
+    return await this.blogsRepo.updateBlog(id, name, websiteUrl, description);
   }
 
   async deleteAllBlogs() {

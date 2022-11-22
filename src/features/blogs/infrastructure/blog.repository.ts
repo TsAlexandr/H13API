@@ -24,7 +24,8 @@ export class BlogsRepo {
   async updateBlog(
     id: string,
     name: string,
-    youtubeUrl: string,
+    websiteUrl: string,
+    description: string
   ): Promise<boolean> {
     const blog = await this.blogModel.findById(id);
     if (!blog) {
@@ -32,7 +33,8 @@ export class BlogsRepo {
     }
 
     blog.name = name;
-    blog.youtubeUrl = youtubeUrl;
+    blog.websiteUrl = websiteUrl;
+    blog.description = description
     blog.save();
 
     return true;

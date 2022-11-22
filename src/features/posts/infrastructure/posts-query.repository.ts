@@ -178,132 +178,13 @@ export class PostsQueryRepository {
     const { pageNumber, pageSize, sortBy, sortDirection } = bqDto;
 
     const posts = await this.postModel
-      .aggregate([
-        { $match: { blogId: blogId } },
-        {
-          $lookup: {
-            from: 'likes',
-            localField: '_id',
-            foreignField: 'postId',
-            pipeline: [
-              {
-                $match: {
-                  status: 'Like',
-                  isBanned: false,
-                },
-              },
-              {
-                $count: 'count',
-              },
-            ],
-            as: 'likesCount',
-          },
-        },
-        {
-          $lookup: {
-            from: 'likes',
-            localField: '_id',
-            foreignField: 'postId',
-            pipeline: [
-              {
-                $match: {
-                  status: 'Dislike',
-                  isBanned: false,
-                },
-              },
-              {
-                $count: 'count',
-              },
-            ],
-            as: 'dislikesCount',
-          },
-        },
-        {
-          $lookup: {
-            from: 'likes',
-            localField: '_id',
-            foreignField: 'postId',
-            pipeline: [
-              {
-                $match: { userId: new mongoose.Types.ObjectId(currentId) },
-              },
-              {
-                $project: { _id: 0, status: 1 },
-              },
-            ],
-            as: 'myStatus',
-          },
-        },
-        {
-          $lookup: {
-            from: 'likes',
-            localField: '_id',
-            foreignField: 'postId',
-            pipeline: [
-              {
-                $match: {
-                  status: 'Like',
-                  isBanned: false,
-                },
-              },
-              {
-                $sort: {
-                  addedAt: -1,
-                },
-              },
-              {
-                $limit: 3,
-              },
-              {
-                $project: {
-                  addedAt: 1,
-                  login: 1,
-                  userId: 1,
-                  _id: 0,
-                },
-              },
-            ],
-            as: 'newestLikes',
-          },
-        },
-        {
-          $project: {
-            _id: 0,
-            id: '$_id',
-            title: 1,
-            shortDescription: 1,
-            content: 1,
-            blogId: 1,
-            blogName: 1,
-            createdAt: 1,
-            'extendedLikesInfo.likesCount': '$likesCount',
-            'extendedLikesInfo.dislikesCount': '$dislikesCount',
-            'extendedLikesInfo.myStatus': '$myStatus',
-            'extendedLikesInfo.newestLikes': '$newestLikes',
-          },
-        },
-      ])
+      .findOne({blogId: blogId})
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       //TODO: решить вопрос с типом sortDirection
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       .sort({ [sortBy]: sortDirection });
-
-    const temp = posts.map((p) => {
-      const likesCountArr = p.extendedLikesInfo.likesCount;
-      const dislikesCountArr = p.extendedLikesInfo.dislikesCount;
-      const myStatusArr = p.extendedLikesInfo.myStatus;
-
-      const extendedLikesInfo = {
-        likesCount: likesCountArr.length ? likesCountArr[0].count : 0,
-        dislikesCount: dislikesCountArr.length ? dislikesCountArr[0].count : 0,
-        myStatus: myStatusArr.length ? myStatusArr[0].status : 'None',
-        newestLikes: p.extendedLikesInfo.newestLikes,
-      };
-      p.extendedLikesInfo = extendedLikesInfo;
-      return p;
-    });
 
     const totalCount: number = await this.postModel.count({
       blogId: blogId,
@@ -314,8 +195,9 @@ export class PostsQueryRepository {
       page: pageNumber,
       pageSize: pageSize,
       totalCount: totalCount,
-      items: temp,
+      items: posts,
     };
     return outputObj;
+
   }
 }

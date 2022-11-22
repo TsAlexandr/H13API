@@ -24,6 +24,7 @@ import { Request } from 'express';
 import mongoose from 'mongoose';
 import { JwtService } from '../../sessions/application/jwt.service';
 import { UserQueryRepository } from '../../users/infrastructure/user-query.repository';
+import {CreatePostDto} from "../../posts/dto/createPost.dto";
 
 @Controller('blogs')
 export class BlogsController {
@@ -79,7 +80,7 @@ export class BlogsController {
   @Post('/:blogId/posts')
   async createPostByBlogId(
     @Param('blogId') blogId: string,
-    @Body() cpDto: CreatePostByIdDto,
+    @Body() cpDto: CreatePostDto,
   ) {
     const blog = await this.blogQueryRepo.findBlogById(blogId);
     if (!blog) throw new NotFoundException();

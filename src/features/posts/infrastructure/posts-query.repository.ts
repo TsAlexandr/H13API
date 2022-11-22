@@ -164,6 +164,7 @@ export class PostsQueryRepository {
     if (!id) {
       return null;
     }
+
     const post = await this.postModel.findOne({_id: new ObjectId(id)})
     return post
   }

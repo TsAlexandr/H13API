@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length, Validate } from 'class-validator';
+import {IsNotEmpty, IsString, Length, Validate} from 'class-validator';
 import { Transform } from 'class-transformer';
 import { Trim } from 'class-sanitizer';
 import { BlogIdValidation } from '../../../common/validators/BlogIdValidation';
@@ -20,8 +20,6 @@ export class CreatePostDto {
   shortDescription: string;
 
   @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
-  @Length(1)
-  @Validate(BlogIdValidation)
+  @IsString()
   blogId: string;
 }

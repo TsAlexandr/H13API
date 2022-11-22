@@ -263,10 +263,7 @@ export class PostsQueryRepository {
           blogId: 1,
           blogName: 1,
           createdAt: 1,
-          'extendedLikesInfo.likesCount': '$likesCount',
-          'extendedLikesInfo.dislikesCount': '$dislikesCount',
-          'extendedLikesInfo.myStatus': '$myStatus',
-          'extendedLikesInfo.newestLikes': '$newestLikes',
+          'extendedLikesInfo': 0,
         },
       },
     ]);

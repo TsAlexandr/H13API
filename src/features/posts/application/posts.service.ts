@@ -23,12 +23,6 @@ export class PostsService {
       blogId: blog.id,
       blogName: blog.name,
       createdAt: new Date().toISOString(),
-      extendedLikesInfo: {
-        likesCount: 0,
-        dislikesCount: 0,
-        myStatus: 'None',
-        newestLikes: [],
-      },
     };
 
     const createdPost = await this.postRepo.createPost(post);

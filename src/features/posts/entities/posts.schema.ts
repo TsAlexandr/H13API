@@ -15,7 +15,5 @@ export class Post {
   blogId: string;
   @Prop()
   createdAt: string;
-  @Prop({ type: ELISchema })
-  extendedLikesInfo: ExtendedLikesInfo;
 }
 export const PostSchema = SchemaFactory.createForClass(Post);

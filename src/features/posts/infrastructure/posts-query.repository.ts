@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from '../entities/posts.schema';
-import { Model, Types } from 'mongoose';
+import {Model, Schema, Types} from 'mongoose';
 import * as mongoose from 'mongoose';
 import { BlogQueryDto } from '../../blogs/dto/blogQuery.dto';
+import {ObjectId} from 'mongodb'
 
 @Injectable()
 export class PostsQueryRepository {
@@ -163,128 +164,8 @@ export class PostsQueryRepository {
     if (!id) {
       return null;
     }
-
-    console.log(currentUserId);
-    const post = await this.postModel.aggregate([
-      { $match: { _id: new mongoose.Types.ObjectId(id) } },
-      {
-        $lookup: {
-          from: 'likes',
-          localField: '_id',
-          foreignField: 'postId',
-          pipeline: [
-            {
-              $match: {
-                status: 'Like',
-                isBanned: false,
-              },
-            },
-            {
-              $count: 'count',
-            },
-          ],
-          as: 'likesCount',
-        },
-      },
-      {
-        $lookup: {
-          from: 'likes',
-          localField: '_id',
-          foreignField: 'postId',
-          pipeline: [
-            {
-              $match: {
-                status: 'Dislike',
-                isBanned: false,
-              },
-            },
-            {
-              $count: 'count',
-            },
-          ],
-          as: 'dislikesCount',
-        },
-      },
-      {
-        $lookup: {
-          from: 'likes',
-          localField: '_id',
-          foreignField: 'postId',
-          pipeline: [
-            {
-              $match: { userId: new mongoose.Types.ObjectId(currentUserId) },
-            },
-            {
-              $project: { _id: 0, status: 1 },
-            },
-          ],
-          as: 'myStatus',
-        },
-      },
-      {
-        $lookup: {
-          from: 'likes',
-          localField: '_id',
-          foreignField: 'postId',
-          pipeline: [
-            {
-              $match: {
-                status: 'Like',
-                isBanned: false,
-              },
-            },
-            {
-              $sort: {
-                addedAt: -1,
-              },
-            },
-            {
-              $limit: 3,
-            },
-            {
-              $project: {
-                addedAt: 1,
-                login: 1,
-                userId: 1,
-                _id: 0,
-              },
-            },
-          ],
-          as: 'newestLikes',
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          id: '$_id',
-          title: 1,
-          shortDescription: 1,
-          content: 1,
-          blogId: 1,
-          blogName: 1,
-          createdAt: 1,
-          'extendedLikesInfo': 0,
-        },
-      },
-    ]);
-
-    console.log(post);
-    const temp = post.map((p) => {
-      const likesCountArr = p.extendedLikesInfo.likesCount;
-      const dislikesCountArr = p.extendedLikesInfo.dislikesCount;
-      const myStatusArr = p.extendedLikesInfo.myStatus;
-
-      const extendedLikesInfo = {
-        likesCount: likesCountArr.length ? likesCountArr[0].count : 0,
-        dislikesCount: dislikesCountArr.length ? dislikesCountArr[0].count : 0,
-        myStatus: myStatusArr.length ? myStatusArr[0].status : 'None',
-        newestLikes: p.extendedLikesInfo.newestLikes,
-      };
-      p.extendedLikesInfo = extendedLikesInfo;
-      return p;
-    });
-
-    return temp[0];
+    const post = await this.postModel.findOne({_id: new ObjectId(id)})
+    return post
   }
 
   async getPostsByBlogId(

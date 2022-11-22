@@ -36,7 +36,6 @@ export class BlogsController {
     private userQueryRepo: UserQueryRepository,
   ) {}
 
-  @UseGuards(BasicAuthGuard)
   @Post()
   async createBlog(@Body() cbDto: CreateBlogDto) {
     return await this.blogsService.createBlog(cbDto);
@@ -76,7 +75,7 @@ export class BlogsController {
     );
   }
 
-  @UseGuards(BasicAuthGuard)
+
   @Post('/:blogId/posts')
   async createPostByBlogId(
     @Param('blogId') blogId: string,
@@ -97,7 +96,7 @@ export class BlogsController {
     return blog;
   }
 
-  @UseGuards(BasicAuthGuard)
+
   @Put('/:id')
   @HttpCode(204)
   async updateBlog(@Param('id') id: string, @Body() cbDto: CreateBlogDto) {
@@ -111,7 +110,7 @@ export class BlogsController {
     return true;
   }
 
-  @UseGuards(BasicAuthGuard)
+
   @Delete('/:id')
   @HttpCode(204)
   async deleteBlog(@Param('id') id: string) {

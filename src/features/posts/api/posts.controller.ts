@@ -43,7 +43,7 @@ export class PostsController {
     private userQueryRepo: UserQueryRepository,
   ) {}
 
-  @UseGuards(BearerAuthGuard)
+
   @Put(':postId/like-status')
   @HttpCode(204)
   async makeLike(
@@ -88,7 +88,7 @@ export class PostsController {
     return comments;
   }
 
-  @UseGuards(BearerAuthGuard)
+
   @Post(':postId/comments')
   @HttpCode(201)
   async createComment(
@@ -145,7 +145,7 @@ export class PostsController {
     return data;
   }
 
-  @UseGuards(BasicAuthGuard)
+
   @Post()
   async createPost(@Body() cpDto: CreatePostDto) {
     console.log(cpDto);
@@ -184,7 +184,7 @@ export class PostsController {
     return post;
   }
 
-  @UseGuards(BasicAuthGuard)
+
   @Put(':id')
   @HttpCode(204)
   async updatePost(@Param('id') id: string, @Body() cpDto: CreatePostDto) {
@@ -204,7 +204,7 @@ export class PostsController {
     return true;
   }
 
-  @UseGuards(BasicAuthGuard)
+
   @Delete(':id')
   @HttpCode(204)
   async deletePost(@Param('id') id: string) {

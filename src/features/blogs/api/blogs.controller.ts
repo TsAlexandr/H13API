@@ -80,12 +80,12 @@ export class BlogsController {
   @Post('/:blogId/posts')
   async createPostByBlogId(
     @Param('blogId') blogId: string,
-    @Body() cpDto: CreatePostDto,
+    @Body() cpDto: CreatePostByIdDto,
   ) {
     const blog = await this.blogQueryRepo.findBlogById(blogId);
     if (!blog) throw new NotFoundException();
 
-    const post = await this.postCUService.createPost(cpDto, blog);
+    const post = await this.postCUService.createPost({...cpDto, blogId}, blog);
     return post;
   }
 

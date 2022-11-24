@@ -15,13 +15,13 @@ export class PostsService {
     return this.postRepo.deletePost(id);
   }
   //TODO:исправить тип для блога
-  async createPost(cpDto: CreatePostDto, blog: any) {
+  async createPost(cpDto: CreatePostDto, blog: string) {
     const post: any = {
       title: cpDto.title,
       shortDescription: cpDto.shortDescription,
       content: cpDto.content,
       blogId: cpDto.blogId,
-      blogName: blog.name,
+      blogName: blog,
       createdAt: new Date().toISOString(),
     };
 

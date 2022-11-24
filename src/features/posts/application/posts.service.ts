@@ -21,7 +21,7 @@ export class PostsService {
       shortDescription: cpDto.shortDescription,
       content: cpDto.content,
       blogId: cpDto.blogId,
-      blogName: blog,
+      blogName: blog.name,
       createdAt: new Date().toISOString(),
     };
 

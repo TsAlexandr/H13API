@@ -207,7 +207,6 @@ export class AuthController {
       delete findedUser.passwordHash;
       delete findedUser.passwordSalt;
       delete findedUser.emailConfirmation;
-      delete findedUser.banInfo;
       delete findedUser.createdAt;
     }
 

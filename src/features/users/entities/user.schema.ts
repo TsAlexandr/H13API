@@ -29,9 +29,6 @@ export class User {
 
   @Prop({ type: RecoverySchema })
   recoveryData: Recovery;
-
-  @Prop({ type: BanInfoSchema })
-  banInfo: BanInfo;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

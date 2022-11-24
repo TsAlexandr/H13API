@@ -33,12 +33,7 @@ export class UsersService {
         confirmationCode: uuidv4(),
         expirationDate: add(new Date(), { hours: 1, minutes: 3 }),
         isConfirmed: false,
-      },
-      banInfo: {
-        isBanned: false,
-        banDate: null,
-        banReason: null,
-      },
+      }
     };
 
     const createResult = await this.userRepo.createUser(newUser);
@@ -53,7 +48,6 @@ export class UsersService {
       login: createResult.login,
       email: createResult.email,
       createdAt: createResult.createdAt,
-      banInfo: createResult.banInfo,
     };
   }
 

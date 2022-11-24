@@ -59,7 +59,7 @@ export class PostsQueryRepository {
     const { pageNumber, pageSize, sortBy, sortDirection } = bqDto;
 
     const posts = await this.postModel
-      .findOne({blogId: blogId})
+      .find({blogId: blogId})
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       //TODO: решить вопрос с типом sortDirection
